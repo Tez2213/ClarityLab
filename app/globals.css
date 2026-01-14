@@ -1,26 +1,95 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Premium Off-White Theme */
+  --background: 0 0% 98%;
+  --foreground: 210 60% 12%;
+  
+  --card: 0 0% 100%;
+  --card-foreground: 210 60% 12%;
+  
+  --popover: 0 0% 100%;
+  --popover-foreground: 210 60% 12%;
+  
+  --primary: 207 90% 54%;
+  --primary-foreground: 0 0% 100%;
+  
+  --secondary: 210 40% 96%;
+  --secondary-foreground: 210 60% 12%;
+  
+  --muted: 210 20% 94%;
+  --muted-foreground: 215 16% 47%;
+  
+  --accent: 195 85% 56%;
+  --accent-foreground: 0 0% 100%;
+  
+  --destructive: 0 84% 60%;
+  --destructive-foreground: 0 0% 100%;
+  
+  --border: 214 20% 90%;
+  --input: 214 20% 90%;
+  --ring: 207 90% 54%;
+  
+  --radius: 0.75rem;
+  
+  /* Custom colors */
+  --navy-deep: 210 100% 15%;
+  --blue-royal: 210 49% 35%;
+  --blue-primary: 207 90% 54%;
+  --cyan-accent: 195 85% 56%;
+  --gray-neutral: 210 20% 94%;
+  
+  --chart-1: 207 90% 54%;
+  --chart-2: 195 85% 56%;
+  --chart-3: 210 49% 35%;
+  --chart-4: 210 40% 96%;
+  --chart-5: 215 16% 47%;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+.dark {
+  --background: 222 47% 11%;
+  --foreground: 210 40% 98%;
+  
+  --card: 222 47% 14%;
+  --card-foreground: 210 40% 98%;
+  
+  --popover: 222 47% 14%;
+  --popover-foreground: 210 40% 98%;
+  
+  --primary: 207 90% 54%;
+  --primary-foreground: 222 47% 11%;
+  
+  --secondary: 217 33% 17%;
+  --secondary-foreground: 210 40% 98%;
+  
+  --muted: 217 33% 17%;
+  --muted-foreground: 215 20% 65%;
+  
+  --accent: 195 85% 56%;
+  --accent-foreground: 222 47% 11%;
+  
+  --destructive: 0 63% 31%;
+  --destructive-foreground: 210 40% 98%;
+  
+  --border: 217 33% 20%;
+  --input: 217 33% 20%;
+  --ring: 207 90% 54%;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+* {
+  border-color: hsl(var(--border));
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-feature-settings: "rlig" 1, "calt" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: 700;
+  color: hsl(var(--foreground));
+  letter-spacing: -0.025em;
 }

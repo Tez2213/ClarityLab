@@ -1,0 +1,4047 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClarityLab - System Architecture & Diagrams</title>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+    <style>
+        :root {
+            --navy-deep: #0A2540;
+            --navy-medium: #1B3B5F;
+            --blue-royal: #2E5C8A;
+            --blue-primary: #0066CC;
+            --blue-light: #4A90E2;
+            --cyan-accent: #00B4D8;
+            --gray-neutral: #F8F9FA;
+            --gray-medium: #E1E4E8;
+            --gray-text: #64748B;
+            --white: #FFFFFF;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--gray-neutral) 0%, var(--white) 100%);
+            color: var(--navy-deep);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px rgba(10, 37, 64, 0.1);
+            overflow: hidden;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--navy-deep) 0%, var(--navy-medium) 100%);
+            color: var(--white);
+            padding: 40px;
+            text-align: center;
+        }
+
+        header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .phase-badge {
+            display: inline-block;
+            background: var(--blue-primary);
+            color: var(--white);
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        nav {
+            background: var(--gray-neutral);
+            padding: 20px 40px;
+            border-bottom: 2px solid var(--gray-medium);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul {
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        nav a {
+            color: var(--navy-medium);
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        nav a:hover {
+            background: var(--blue-primary);
+            color: var(--white);
+        }
+
+        main {
+            padding: 40px;
+        }
+
+        .diagram-section {
+            margin-bottom: 60px;
+        }
+
+        .section-header {
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--blue-primary);
+        }
+
+        .section-header h2 {
+            color: var(--navy-deep);
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .section-header p {
+            color: var(--gray-text);
+            font-size: 1rem;
+        }
+
+        .diagram-container {
+            background: var(--white);
+            border: 2px solid var(--gray-medium);
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(10, 37, 64, 0.05);
+        }
+
+        .diagram-title {
+            color: var(--navy-medium);
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .diagram-title::before {
+            content: "▸";
+            color: var(--blue-primary);
+            font-size: 1.5rem;
+        }
+
+        .mermaid {
+            background: var(--gray-neutral);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        footer {
+            background: var(--navy-deep);
+            color: var(--white);
+            text-align: center;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        footer p {
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 1.8rem;
+            }
+
+            main {
+                padding: 20px;
+            }
+
+            nav {
+                padding: 15px 20px;
+            }
+
+            nav ul {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🧠 ClarityLab</h1>
+            <p>Autonomous Financial Intelligence System - Complete Architecture & System Diagrams</p>
+            <div class="phase-badge">Phase 1: Core Architecture & Infrastructure</div>
+            <div class="phase-badge">Phase 2: Agent Intelligence & Data Processing</div>
+            <div class="phase-badge">Phase 3-A: Observability & Evaluation</div>
+            <div class="phase-badge">Phase 3-B: Security & Advanced Features</div>
+        </header>
+
+        <nav>
+            <ul>
+                <li><a href="#system-architecture">System Architecture</a></li>
+                <li><a href="#frontend-architecture">Frontend</a></li>
+                <li><a href="#backend-architecture">Backend</a></li>
+                <li><a href="#infrastructure">Infrastructure</a></li>
+                <li><a href="#database-architecture">Database</a></li>
+                <li><a href="#data-ingestion">Data Ingestion</a></li>
+                <li><a href="#agent-overview">Agent System</a></li>
+                <li><a href="#agent-pipeline">Agent Pipeline</a></li>
+                <li><a href="#multi-agent">Multi-Agent</a></li>
+                <li><a href="#planner-loop">Planner Loop</a></li>
+                <li><a href="#reasoning-pipeline">Reasoning</a></li>
+                <li><a href="#transaction-processing">Processing</a></li>
+                <li><a href="#feature-extraction">Features</a></li>
+                <li><a href="#memory-management">Memory</a></li>
+                <li><a href="#recommendation-flow">Recommendations</a></li>
+                <li><a href="#data-lifecycle">Lifecycle</a></li>
+                <li><a href="#opik-architecture">Opik System</a></li>
+                <li><a href="#agent-trace">Trace & Eval</a></li>
+                <li><a href="#feedback-loop">Feedback Loop</a></li>
+                <li><a href="#metrics-monitoring">Metrics</a></li>
+                <li><a href="#user-journey">User Journey</a></li>
+                <li><a href="#request-response">Request Flow</a></li>
+                <li><a href="#security-boundary">Security</a></li>
+                <li><a href="#privacy-access">Privacy</a></li>
+                <li><a href="#failure-recovery">Recovery</a></li>
+                <li><a href="#model-versioning">Versioning</a></li>
+                <li><a href="#scalability">Scalability</a></li>
+            </ul>
+        </nav>
+
+        <main>
+            <!-- 1. High-Level System Architecture -->
+            <section id="system-architecture" class="diagram-section">
+                <div class="section-header">
+                    <h2>High-Level System Architecture</h2>
+                    <p>Complete overview of ClarityLab's system components, data flow, and integration points</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Complete System Overview</div>
+                    <div class="mermaid">
+graph TB
+    subgraph "Client Layer"
+        WEB[Web Browser]
+        MOBILE[Mobile Browser]
+    end
+    
+    subgraph "Frontend Layer - Next.js"
+        UI[React UI Components]
+        PAGES[App Router Pages]
+        HOOKS[Custom Hooks]
+        STATE[State Management]
+    end
+    
+    subgraph "API Layer"
+        API[Next.js API Routes]
+        SA[Server Actions]
+        MW[Middleware]
+    end
+    
+    subgraph "Authentication"
+        AUTH[NextAuth]
+        SESSION[Session Management]
+    end
+    
+    subgraph "Agent Intelligence System"
+        INGESTION[Data Ingestion Agent]
+        CATEGORIZATION[Categorization Agent]
+        PATTERN[Pattern Detection Agent]
+        REASONING[Financial Reasoning Agent]
+        PLANNING[Decision Planning Agent]
+    end
+    
+    subgraph "LLM Layer"
+        GEMINI[Google Gemini API]
+        PROMPT[Prompt Engineering]
+    end
+    
+    subgraph "Data Layer"
+        DB[(PostgreSQL/Supabase)]
+        PRISMA[Prisma ORM]
+    end
+    
+    subgraph "External Services"
+        PLAID[Plaid API]
+        OPIK[Opik by Comet]
+    end
+    
+    WEB --> UI
+    MOBILE --> UI
+    UI --> PAGES
+    PAGES --> API
+    PAGES --> SA
+    API --> MW
+    MW --> AUTH
+    AUTH --> SESSION
+    
+    API --> INGESTION
+    SA --> INGESTION
+    
+    PLAID --> INGESTION
+    
+    INGESTION --> CATEGORIZATION
+    CATEGORIZATION --> PATTERN
+    PATTERN --> REASONING
+    REASONING --> PLANNING
+    
+    CATEGORIZATION -.LLM Call.-> GEMINI
+    PATTERN -.LLM Call.-> GEMINI
+    REASONING -.LLM Call.-> GEMINI
+    PLANNING -.LLM Call.-> GEMINI
+    
+    INGESTION --> PRISMA
+    CATEGORIZATION --> PRISMA
+    PATTERN --> PRISMA
+    REASONING --> PRISMA
+    PLANNING --> PRISMA
+    PRISMA --> DB
+    
+    CATEGORIZATION -.Trace.-> OPIK
+    PATTERN -.Trace.-> OPIK
+    REASONING -.Trace.-> OPIK
+    PLANNING -.Trace.-> OPIK
+    
+    PLANNING --> UI
+    
+    style WEB fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+    style MOBILE fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+    style UI fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style GEMINI fill:#00B4D8,stroke:#0A2540,stroke-width:3px,color:#fff
+    style DB fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style OPIK fill:#1B3B5F,stroke:#0A2540,stroke-width:3px,color:#fff
+    style PLAID fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Frontend Architecture -->
+            <section id="frontend-architecture" class="diagram-section">
+                <div class="section-header">
+                    <h2>Frontend Architecture</h2>
+                    <p>Next.js App Router, React components, state management, and user interface layer</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Frontend Component Structure</div>
+                    <div class="mermaid">
+graph TB
+    subgraph "Next.js App Router"
+        ROOT[app/layout.tsx]
+        HOME[app/page.tsx]
+        DASH[app/dashboard/page.tsx]
+        INSIGHTS[app/insights/page.tsx]
+        SETTINGS[app/settings/page.tsx]
+        AUTH_PAGE[app/auth/signin/page.tsx]
+    end
+    
+    subgraph "UI Components"
+        LAYOUT[Layout Component]
+        NAV[Navigation]
+        SIDEBAR[Sidebar]
+        HEADER[Header]
+        FOOTER[Footer]
+    end
+    
+    subgraph "Feature Components"
+        TRANS_LIST[TransactionList]
+        CHART_WIDGET[ChartWidget]
+        INSIGHT_CARD[InsightCard]
+        ACTION_PLAN[ActionPlanCard]
+        BUDGET_TRACKER[BudgetTracker]
+        GOAL_PROGRESS[GoalProgress]
+    end
+    
+    subgraph "Form Components"
+        TRANS_FORM[TransactionForm]
+        PROFILE_FORM[ProfileForm]
+        UPLOAD_FORM[UploadForm]
+        FEEDBACK_FORM[FeedbackForm]
+    end
+    
+    subgraph "State Management"
+        CONTEXT[React Context]
+        HOOKS[Custom Hooks]
+        ZUSTAND[Zustand Store]
+    end
+    
+    subgraph "Data Fetching"
+        SWR[SWR/React Query]
+        API_CLIENT[API Client]
+        SERVER_ACTIONS[Server Actions]
+    end
+    
+    ROOT --> LAYOUT
+    LAYOUT --> NAV
+    LAYOUT --> HEADER
+    LAYOUT --> FOOTER
+    
+    HOME --> DASH
+    DASH --> SIDEBAR
+    DASH --> TRANS_LIST
+    DASH --> CHART_WIDGET
+    DASH --> ACTION_PLAN
+    
+    INSIGHTS --> INSIGHT_CARD
+    INSIGHTS --> BUDGET_TRACKER
+    INSIGHTS --> GOAL_PROGRESS
+    
+    SETTINGS --> PROFILE_FORM
+    SETTINGS --> UPLOAD_FORM
+    
+    TRANS_LIST --> CONTEXT
+    CHART_WIDGET --> HOOKS
+    ACTION_PLAN --> ZUSTAND
+    
+    TRANS_FORM --> API_CLIENT
+    PROFILE_FORM --> SERVER_ACTIONS
+    UPLOAD_FORM --> API_CLIENT
+    FEEDBACK_FORM --> SWR
+    
+    style ROOT fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style LAYOUT fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style CONTEXT fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style API_CLIENT fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">User Interaction Flow</div>
+                    <div class="mermaid">
+sequenceDiagram
+    actor User
+    participant UI as React UI
+    participant Router as App Router
+    participant Hook as Custom Hook
+    participant API as API Client
+    participant Server as Next.js Server
+    
+    User->>UI: Opens Dashboard
+    UI->>Router: Navigate to /dashboard
+    Router->>Hook: Fetch user data
+    Hook->>API: GET /api/transactions
+    API->>Server: HTTP Request
+    Server-->>API: Transaction data
+    API-->>Hook: Parsed response
+    Hook-->>UI: Update state
+    UI-->>User: Render dashboard
+    
+    User->>UI: Upload CSV
+    UI->>Hook: Trigger upload
+    Hook->>API: POST /api/transactions/upload
+    API->>Server: Multipart form data
+    Server-->>API: Processing started
+    API-->>Hook: Upload success
+    Hook-->>UI: Show success message
+    UI-->>User: Display confirmation
+    
+    style User fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px
+    style Server fill:#0066CC,stroke:#0A2540,stroke-width:2px
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. Backend Architecture -->
+            <section id="backend-architecture" class="diagram-section">
+                <div class="section-header">
+                    <h2>Backend Architecture</h2>
+                    <p>Next.js API routes, server actions, middleware, and business logic organization</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Backend Service Layer</div>
+                    <div class="mermaid">
+graph TB
+    subgraph API["API Routes"]
+        AUTH_API[auth nextauth route]
+        TRANS_API[transactions route]
+        UPLOAD_API[transactions upload]
+        INSIGHTS_API[insights route]
+        AGENT_API[agent analyze]
+        USER_API[user profile]
+    end
+    
+    subgraph "Server Actions - app/actions/"
+        TRANS_ACTION[transactionActions.ts]
+        USER_ACTION[userActions.ts]
+        AGENT_ACTION[agentActions.ts]
+    end
+    
+    subgraph "Middleware"
+        AUTH_MW[Authentication Middleware]
+        RATE_MW[Rate Limiting]
+        LOG_MW[Logging Middleware]
+        ERROR_MW[Error Handler]
+    end
+    
+    subgraph "Business Logic - lib/"
+        TRANS_SERVICE[Transaction Service]
+        USER_SERVICE[User Service]
+        AGENT_SERVICE[Agent Orchestrator]
+        VALIDATION[Validation Layer]
+    end
+    
+    subgraph "Agent System - lib/agents/"
+        INGESTION_AGENT[Ingestion Agent]
+        CATEGORY_AGENT[Categorization Agent]
+        PATTERN_AGENT[Pattern Agent]
+        REASON_AGENT[Reasoning Agent]
+        PLAN_AGENT[Planning Agent]
+    end
+    
+    subgraph "External Integration - lib/integrations/"
+        GEMINI_CLIENT[Gemini Client]
+        OPIK_CLIENT[Opik Client]
+        PLAID_CLIENT[Plaid Client]
+    end
+    
+    subgraph "Data Access - lib/db/"
+        PRISMA_CLIENT[Prisma Client]
+        QUERIES[Database Queries]
+        MIGRATIONS[Migrations]
+    end
+    
+    TRANS_API --> AUTH_MW
+    UPLOAD_API --> AUTH_MW
+    INSIGHTS_API --> AUTH_MW
+    
+    AUTH_MW --> RATE_MW
+    RATE_MW --> LOG_MW
+    LOG_MW --> TRANS_SERVICE
+    
+    TRANS_ACTION --> VALIDATION
+    VALIDATION --> TRANS_SERVICE
+    
+    TRANS_SERVICE --> PRISMA_CLIENT
+    USER_SERVICE --> PRISMA_CLIENT
+    
+    AGENT_API --> AGENT_SERVICE
+    AGENT_ACTION --> AGENT_SERVICE
+    
+    AGENT_SERVICE --> INGESTION_AGENT
+    INGESTION_AGENT --> CATEGORY_AGENT
+    CATEGORY_AGENT --> PATTERN_AGENT
+    PATTERN_AGENT --> REASON_AGENT
+    REASON_AGENT --> PLAN_AGENT
+    
+    CATEGORY_AGENT --> GEMINI_CLIENT
+    PATTERN_AGENT --> GEMINI_CLIENT
+    REASON_AGENT --> GEMINI_CLIENT
+    PLAN_AGENT --> GEMINI_CLIENT
+    
+    CATEGORY_AGENT --> OPIK_CLIENT
+    PATTERN_AGENT --> OPIK_CLIENT
+    REASON_AGENT --> OPIK_CLIENT
+    PLAN_AGENT --> OPIK_CLIENT
+    
+    UPLOAD_API --> PLAID_CLIENT
+    
+    PRISMA_CLIENT --> QUERIES
+    
+    style AUTH_MW fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style AGENT_SERVICE fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style GEMINI_CLIENT fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style OPIK_CLIENT fill:#1B3B5F,stroke:#0A2540,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Request Processing Flow</div>
+                    <div class="mermaid">
+sequenceDiagram
+    participant Client
+    participant MW as Middleware
+    participant API as API Route
+    participant Service as Business Logic
+    participant Agent as Agent System
+    participant Gemini as Gemini API
+    participant DB as Database
+    participant Opik as Opik
+    
+    Client->>MW: HTTP Request
+    MW->>MW: Authenticate
+    MW->>MW: Rate Limit Check
+    MW->>MW: Logging
+    MW->>API: Forward Request
+    
+    API->>Service: Call Service Method
+    Service->>Service: Validate Input
+    Service->>DB: Query/Write Data
+    DB-->>Service: Data Response
+    
+    Service->>Agent: Trigger Analysis
+    Agent->>Gemini: LLM Request
+    Gemini-->>Agent: LLM Response
+    Agent->>Opik: Log Trace
+    Agent->>DB: Store Results
+    
+    Agent-->>Service: Analysis Complete
+    Service-->>API: Formatted Response
+    API-->>MW: HTTP Response
+    MW-->>Client: JSON Response
+    
+    style MW fill:#2E5C8A,stroke:#0A2540,stroke-width:2px
+    style Agent fill:#0066CC,stroke:#0A2540,stroke-width:2px
+    style Gemini fill:#00B4D8,stroke:#0A2540,stroke-width:2px
+    style Opik fill:#1B3B5F,stroke:#0A2540,stroke-width:2px
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Infrastructure Architecture -->
+            <section id="infrastructure" class="diagram-section">
+                <div class="section-header">
+                    <h2>Infrastructure Architecture</h2>
+                    <p>Deployment architecture, hosting, services, and infrastructure components</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Deployment Architecture</div>
+                    <div class="mermaid">
+graph TB
+    subgraph CLIENT["Client Tier"]
+        BROWSER[Web Browsers]
+        DEVICES[Mobile Devices]
+    end
+    
+    subgraph CDN["CDN and Edge"]
+        VERCEL_EDGE[Vercel Edge Network]
+        STATIC[Static Assets]
+        CACHE[Edge Cache]
+    end
+    
+    subgraph APPTIER["Application Tier"]
+        NEXTJS[Next.js Application]
+        API_ROUTES[API Routes]
+        SERVER_COMP[Server Components]
+        MIDDLEWARE[Edge Middleware]
+    end
+    
+    subgraph "Services Tier"
+        AUTH_SERVICE[NextAuth Service]
+        AGENT_SERVICE[Agent Orchestrator]
+        GEMINI_SERVICE[Gemini API Service]
+    end
+    
+    subgraph "Data Tier"
+        SUPABASE[Supabase PostgreSQL]
+        CONN_POOL[Connection Pooling]
+    end
+    
+    subgraph "External Services"
+        PLAID_SVC[Plaid API]
+        OPIK_SVC[Opik Platform]
+    end
+    
+    subgraph "Monitoring & Logging"
+        VERCEL_ANALYTICS[Vercel Analytics]
+        OPIK_TRACES[Opik Traces]
+        ERROR_TRACK[Error Tracking]
+    end
+    
+    BROWSER --> VERCEL_EDGE
+    DEVICES --> VERCEL_EDGE
+    
+    VERCEL_EDGE --> STATIC
+    VERCEL_EDGE --> CACHE
+    VERCEL_EDGE --> MIDDLEWARE
+    
+    MIDDLEWARE --> NEXTJS
+    NEXTJS --> API_ROUTES
+    NEXTJS --> SERVER_COMP
+    
+    API_ROUTES --> AUTH_SERVICE
+    API_ROUTES --> AGENT_SERVICE
+    
+    AGENT_SERVICE --> GEMINI_SERVICE
+    AGENT_SERVICE --> OPIK_SVC
+    
+    SERVER_COMP --> SUPABASE
+    API_ROUTES --> CONN_POOL
+    CONN_POOL --> SUPABASE
+    
+    API_ROUTES --> PLAID_SVC
+    
+    NEXTJS -.Monitor.-> VERCEL_ANALYTICS
+    AGENT_SERVICE -.Trace.-> OPIK_TRACES
+    API_ROUTES -.Log.-> ERROR_TRACK
+    
+    style VERCEL_EDGE fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style NEXTJS fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style SUPABASE fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style GEMINI_SERVICE fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+    style OPIK_SVC fill:#1B3B5F,stroke:#0A2540,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Service Communication Pattern</div>
+                    <div class="mermaid">
+graph LR
+    subgraph "Frontend"
+        UI[UI Components]
+    end
+    
+    subgraph "Backend Services"
+        API[API Layer]
+        AGENT[Agent Service]
+    end
+    
+    subgraph "External APIs"
+        GEMINI[Gemini API]
+        PLAID[Plaid API]
+        OPIK[Opik API]
+    end
+    
+    subgraph "Database"
+        DB[(PostgreSQL)]
+    end
+    
+    UI -->|HTTPS| API
+    API -->|Internal Call| AGENT
+    AGENT -->|HTTPS| GEMINI
+    API -->|HTTPS| PLAID
+    AGENT -->|HTTPS| OPIK
+    API -->|SQL| DB
+    AGENT -->|SQL| DB
+    
+    style UI fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+    style API fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style AGENT fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style GEMINI fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style DB fill:#1B3B5F,stroke:#0A2540,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+            </section>
+
+            <!-- 5. Database Architecture -->
+            <section id="database-architecture" class="diagram-section">
+                <div class="section-header">
+                    <h2>Database Architecture</h2>
+                    <p>PostgreSQL schema design, relationships, and data organization</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Database Schema & Relationships</div>
+                    <div class="mermaid">
+erDiagram
+    USER ||--o{ TRANSACTION : has
+    USER ||--o{ BUDGET : creates
+    USER ||--o{ GOAL : sets
+    USER ||--o{ INSIGHT : receives
+    USER ||--|| USER_PROFILE : has
+    USER ||--o{ RECOMMENDATION : receives
+    USER ||--o{ FEEDBACK : provides
+    
+    TRANSACTION ||--o{ TRANSACTION_CATEGORY : has
+    TRANSACTION ||--o{ PATTERN_DETECTION : triggers
+    
+    BUDGET ||--o{ BUDGET_CATEGORY : contains
+    
+    RECOMMENDATION ||--o{ AGENT_TRACE : logged_by
+    RECOMMENDATION ||--o{ FEEDBACK : receives
+    
+    PATTERN_DETECTION ||--o{ INSIGHT : generates
+    
+    AGENT_TRACE ||--|| OPIK_TRACE : syncs_to
+    
+    USER {
+        string id PK
+        string email UK
+        string name
+        datetime created_at
+        datetime updated_at
+    }
+    
+    USER_PROFILE {
+        string id PK
+        string user_id FK
+        decimal monthly_income
+        decimal savings_goal
+        json financial_goals
+        datetime created_at
+    }
+    
+    TRANSACTION {
+        string id PK
+        string user_id FK
+        decimal amount
+        string description
+        date transaction_date
+        string merchant
+        string raw_category
+        datetime created_at
+    }
+    
+    TRANSACTION_CATEGORY {
+        string id PK
+        string transaction_id FK
+        string category
+        string sub_category
+        decimal confidence_score
+        json llm_reasoning
+        datetime categorized_at
+    }
+    
+    PATTERN_DETECTION {
+        string id PK
+        string user_id FK
+        string pattern_type
+        json pattern_data
+        string frequency
+        decimal significance_score
+        datetime detected_at
+    }
+    
+    INSIGHT {
+        string id PK
+        string user_id FK
+        string pattern_id FK
+        string insight_type
+        string title
+        text description
+        json supporting_data
+        datetime created_at
+    }
+    
+    BUDGET {
+        string id PK
+        string user_id FK
+        string period
+        decimal total_amount
+        date start_date
+        date end_date
+        datetime created_at
+    }
+    
+    BUDGET_CATEGORY {
+        string id PK
+        string budget_id FK
+        string category
+        decimal allocated_amount
+        decimal spent_amount
+    }
+    
+    GOAL {
+        string id PK
+        string user_id FK
+        string goal_type
+        string title
+        decimal target_amount
+        decimal current_amount
+        date target_date
+        string status
+        datetime created_at
+    }
+    
+    RECOMMENDATION {
+        string id PK
+        string user_id FK
+        string priority
+        string title
+        text reasoning
+        json action_items
+        string status
+        datetime created_at
+    }
+    
+    AGENT_TRACE {
+        string id PK
+        string recommendation_id FK
+        string agent_stage
+        json input_data
+        json output_data
+        json llm_metadata
+        datetime timestamp
+    }
+    
+    OPIK_TRACE {
+        string id PK
+        string agent_trace_id FK
+        string opik_trace_id
+        json trace_data
+        datetime synced_at
+    }
+    
+    FEEDBACK {
+        string id PK
+        string user_id FK
+        string recommendation_id FK
+        string feedback_type
+        int rating
+        text comment
+        datetime created_at
+    }
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Data Access Patterns</div>
+                    <div class="mermaid">
+graph TB
+    subgraph "Application Layer"
+        APP[Application Code]
+    end
+    
+    subgraph "Data Access Layer"
+        PRISMA[Prisma ORM]
+        QUERIES[Query Builder]
+        MODELS[Type-Safe Models]
+    end
+    
+    subgraph "Database Operations"
+        READ[Read Operations]
+        WRITE[Write Operations]
+        TRANSACTIONS[Transaction Management]
+        MIGRATIONS[Schema Migrations]
+    end
+    
+    subgraph "PostgreSQL Database"
+        TABLES[Tables]
+        INDEXES[Indexes]
+        CONSTRAINTS[Constraints]
+        VIEWS[Views]
+    end
+    
+    subgraph "Optimization"
+        CONN_POOL[Connection Pooling]
+        CACHING[Query Caching]
+        INDEXES_OPT[Index Optimization]
+    end
+    
+    APP --> PRISMA
+    PRISMA --> QUERIES
+    PRISMA --> MODELS
+    
+    QUERIES --> READ
+    QUERIES --> WRITE
+    QUERIES --> TRANSACTIONS
+    
+    READ --> TABLES
+    WRITE --> TABLES
+    TRANSACTIONS --> TABLES
+    MIGRATIONS --> TABLES
+    
+    TABLES --> INDEXES
+    TABLES --> CONSTRAINTS
+    TABLES --> VIEWS
+    
+    READ --> CONN_POOL
+    WRITE --> CONN_POOL
+    READ --> CACHING
+    QUERIES --> INDEXES_OPT
+    
+    style PRISMA fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style TABLES fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style CONN_POOL fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+            </section>
+
+            <!-- 6. Data Ingestion Pipeline -->
+            <section id="data-ingestion" class="diagram-section">
+                <div class="section-header">
+                    <h2>Data Ingestion Pipeline</h2>
+                    <p>Transaction data collection, processing, validation, and storage workflows</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Multi-Source Ingestion Flow</div>
+                    <div class="mermaid">
+graph TB
+    subgraph "Data Sources"
+        PLAID[Plaid Bank Connection]
+        CSV[CSV Upload]
+        MANUAL[Manual Entry]
+    end
+    
+    subgraph "Ingestion Layer"
+        PLAID_PARSER[Plaid Data Parser]
+        CSV_PARSER[CSV Parser]
+        VALIDATION[Data Validation]
+        NORMALIZATION[Data Normalization]
+    end
+    
+    subgraph "Processing Queue"
+        QUEUE[Processing Queue]
+        DEDUP[Deduplication]
+        ENRICHMENT[Data Enrichment]
+    end
+    
+    subgraph "Storage"
+        RAW_STORAGE[Raw Data Storage]
+        PROCESSED_STORAGE[Processed Storage]
+        DB[(PostgreSQL)]
+    end
+    
+    subgraph "Agent Trigger"
+        CATEGORIZATION_TRIGGER[Trigger Categorization]
+        PATTERN_TRIGGER[Trigger Pattern Detection]
+    end
+    
+    PLAID --> PLAID_PARSER
+    CSV --> CSV_PARSER
+    MANUAL --> VALIDATION
+    
+    PLAID_PARSER --> VALIDATION
+    CSV_PARSER --> VALIDATION
+    
+    VALIDATION --> NORMALIZATION
+    NORMALIZATION --> QUEUE
+    
+    QUEUE --> DEDUP
+    DEDUP --> ENRICHMENT
+    
+    ENRICHMENT --> RAW_STORAGE
+    RAW_STORAGE --> PROCESSED_STORAGE
+    PROCESSED_STORAGE --> DB
+    
+    DB --> CATEGORIZATION_TRIGGER
+    CATEGORIZATION_TRIGGER --> PATTERN_TRIGGER
+    
+    style VALIDATION fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style QUEUE fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style DB fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style CATEGORIZATION_TRIGGER fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Detailed Ingestion Process</div>
+                    <div class="mermaid">
+sequenceDiagram
+    actor User
+    participant UI as Frontend
+    participant API as Ingestion API
+    participant Validator as Validation Service
+    participant Parser as Data Parser
+    participant Enricher as Enrichment Service
+    participant DB as Database
+    participant Agent as Agent System
+    participant Opik as Opik
+    
+    User->>UI: Upload CSV / Connect Plaid
+    UI->>API: POST /api/transactions/ingest
+    API->>Validator: Validate format & schema
+    
+    alt Invalid Data
+        Validator-->>API: Validation errors
+        API-->>UI: Error response
+        UI-->>User: Show error message
+    else Valid Data
+        Validator->>Parser: Parse transactions
+        Parser->>Parser: Extract fields
+        Parser->>Parser: Normalize formats
+        Parser->>Enricher: Enrich data
+        
+        Enricher->>Enricher: Add metadata
+        Enricher->>Enricher: Detect duplicates
+        Enricher->>Enricher: Merchant matching
+        
+        Enricher->>DB: Bulk insert transactions
+        DB-->>Enricher: Insert successful
+        
+        Enricher->>Agent: Trigger categorization
+        Agent->>Opik: Log ingestion event
+        
+        Agent-->>API: Processing started
+        API-->>UI: Success response
+        UI-->>User: Show success & processing
+    end
+    
+    style Validator fill:#0066CC,stroke:#0A2540,stroke-width:2px
+    style Parser fill:#2E5C8A,stroke:#0A2540,stroke-width:2px
+    style Agent fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px
+    style Opik fill:#1B3B5F,stroke:#0A2540,stroke-width:2px
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Data Transformation Pipeline</div>
+                    <div class="mermaid">
+graph LR
+    A[Raw Transaction Data] --> B[Schema Validation]
+    B --> C[Data Type Conversion]
+    C --> D[Field Normalization]
+    D --> E[Deduplication Check]
+    E --> F[Merchant Enrichment]
+    F --> G[Metadata Addition]
+    G --> H[Store in Database]
+    H --> I[Trigger Agent Analysis]
+    
+    B -.Error.-> ERR[Error Handler]
+    E -.Duplicate Found.-> SKIP[Skip Transaction]
+    
+    style B fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style E fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style H fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style I fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+    style ERR fill:#dc2626,stroke:#0A2540,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+            </section>
+
+            <!-- PHASE 2: AGENT INTELLIGENCE & DATA PROCESSING -->
+
+            <!-- 7. Agentic System Overview -->
+            <section id="agent-overview" class="diagram-section">
+                <div class="section-header">
+                    <h2>Agentic System Overview</h2>
+                    <p>Complete autonomous agent architecture with intelligence layers and decision-making flow</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Multi-Layer Agent Architecture</div>
+                    <div class="mermaid">
+graph TB
+    subgraph "Input Layer"
+        TRANS_DATA[Transaction Data]
+        USER_CONTEXT[User Financial Context]
+        HISTORICAL[Historical Patterns]
+    end
+    
+    subgraph "Agent Intelligence Layer"
+        ORCHESTRATOR[Agent Orchestrator]
+        
+        subgraph "Stage 1: Ingestion"
+            INGEST_AGENT[Ingestion Agent]
+            DATA_VALIDATOR[Data Validator]
+            NORMALIZER[Normalizer]
+        end
+        
+        subgraph "Stage 2: Categorization"
+            CAT_AGENT[Categorization Agent]
+            LLM_CAT[LLM Categorizer]
+            CONFIDENCE[Confidence Scorer]
+        end
+        
+        subgraph "Stage 3: Pattern Detection"
+            PATTERN_AGENT[Pattern Detection Agent]
+            TEMPORAL[Temporal Analyzer]
+            BEHAVIORAL[Behavioral Analyzer]
+            ANOMALY[Anomaly Detector]
+        end
+        
+        subgraph "Stage 4: Financial Reasoning"
+            REASON_AGENT[Reasoning Agent]
+            BUDGET_ANALYZER[Budget Analyzer]
+            GOAL_EVALUATOR[Goal Evaluator]
+            RISK_ASSESSOR[Risk Assessor]
+        end
+        
+        subgraph "Stage 5: Decision Planning"
+            PLAN_AGENT[Planning Agent]
+            PRIORITIZER[Action Prioritizer]
+            IMPACT_CALCULATOR[Impact Calculator]
+            EXPLAINER[Explainability Engine]
+        end
+    end
+    
+    subgraph "Knowledge Layer"
+        MEMORY[Agent Memory]
+        CONTEXT_STORE[Context Store]
+        PATTERN_LIBRARY[Pattern Library]
+        USER_PROFILE_MEM[User Profile Memory]
+    end
+    
+    subgraph "LLM Integration"
+        GEMINI_API[Gemini API]
+        PROMPT_TEMPLATES[Prompt Templates]
+        RESPONSE_PARSER[Response Parser]
+    end
+    
+    subgraph "Observability Layer"
+        OPIK_TRACER[Opik Tracer]
+        METRICS_COLLECTOR[Metrics Collector]
+        DECISION_LOGGER[Decision Logger]
+    end
+    
+    subgraph "Output Layer"
+        INSIGHTS[Financial Insights]
+        RECOMMENDATIONS[Prioritized Actions]
+        EXPLANATIONS[Reasoning Traces]
+    end
+    
+    TRANS_DATA --> ORCHESTRATOR
+    USER_CONTEXT --> ORCHESTRATOR
+    HISTORICAL --> MEMORY
+    
+    ORCHESTRATOR --> INGEST_AGENT
+    INGEST_AGENT --> DATA_VALIDATOR
+    DATA_VALIDATOR --> NORMALIZER
+    
+    NORMALIZER --> CAT_AGENT
+    CAT_AGENT --> LLM_CAT
+    LLM_CAT --> GEMINI_API
+    GEMINI_API --> RESPONSE_PARSER
+    RESPONSE_PARSER --> CONFIDENCE
+    
+    CONFIDENCE --> PATTERN_AGENT
+    PATTERN_AGENT --> TEMPORAL
+    PATTERN_AGENT --> BEHAVIORAL
+    PATTERN_AGENT --> ANOMALY
+    TEMPORAL --> MEMORY
+    BEHAVIORAL --> MEMORY
+    
+    ANOMALY --> REASON_AGENT
+    REASON_AGENT --> BUDGET_ANALYZER
+    REASON_AGENT --> GOAL_EVALUATOR
+    REASON_AGENT --> RISK_ASSESSOR
+    BUDGET_ANALYZER --> GEMINI_API
+    GOAL_EVALUATOR --> CONTEXT_STORE
+    
+    RISK_ASSESSOR --> PLAN_AGENT
+    PLAN_AGENT --> PRIORITIZER
+    PLAN_AGENT --> IMPACT_CALCULATOR
+    PLAN_AGENT --> EXPLAINER
+    EXPLAINER --> GEMINI_API
+    
+    PRIORITIZER --> RECOMMENDATIONS
+    IMPACT_CALCULATOR --> INSIGHTS
+    EXPLAINER --> EXPLANATIONS
+    
+    CAT_AGENT -.Log.-> OPIK_TRACER
+    PATTERN_AGENT -.Log.-> OPIK_TRACER
+    REASON_AGENT -.Log.-> OPIK_TRACER
+    PLAN_AGENT -.Log.-> OPIK_TRACER
+    
+    OPIK_TRACER --> METRICS_COLLECTOR
+    OPIK_TRACER --> DECISION_LOGGER
+    
+    MEMORY --> PATTERN_LIBRARY
+    CONTEXT_STORE --> USER_PROFILE_MEM
+    
+    style ORCHESTRATOR fill:#0066CC,stroke:#0A2540,stroke-width:3px,color:#fff
+    style GEMINI_API fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style OPIK_TRACER fill:#1B3B5F,stroke:#0A2540,stroke-width:2px,color:#fff
+    style MEMORY fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style RECOMMENDATIONS fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+            </section>
+
+            <!-- 8. Multi-Stage Agent Pipeline -->
+            <section id="agent-pipeline" class="diagram-section">
+                <div class="section-header">
+                    <h2>Multi-Stage Agent Pipeline</h2>
+                    <p>Sequential agent execution with data flow, transformations, and decision propagation</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">5-Stage Agent Execution Flow</div>
+                    <div class="mermaid">
+graph LR
+    A[Raw Transaction Data] --> B[Stage 1: Ingestion]
+    B --> B1[Validate Schema]
+    B1 --> B2[Normalize Data]
+    B2 --> B3[Store Raw Data]
+    B3 --> C[Stage 2: Categorization]
+    
+    C --> C1[LLM Analysis]
+    C1 --> C2[Semantic Categorization]
+    C2 --> C3[Confidence Scoring]
+    C3 --> D[Stage 3: Pattern Detection]
+    
+    D --> D1[Temporal Analysis]
+    D1 --> D2[Behavioral Patterns]
+    D2 --> D3[Anomaly Detection]
+    D3 --> E[Stage 4: Financial Reasoning]
+    
+    E --> E1[Budget Analysis]
+    E1 --> E2[Goal Evaluation]
+    E2 --> E3[Trade-off Analysis]
+    E3 --> F[Stage 5: Decision Planning]
+    
+    F --> F1[Action Prioritization]
+    F1 --> F2[Impact Calculation]
+    F2 --> F3[Explainability Generation]
+    F3 --> G[Output: Prioritized Action Plan]
+    
+    C1 -.Trace.-> OPIK1[Opik Log]
+    D2 -.Trace.-> OPIK2[Opik Log]
+    E2 -.Trace.-> OPIK3[Opik Log]
+    F2 -.Trace.-> OPIK4[Opik Log]
+    
+    style B fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style C fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style D fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style E fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style F fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style G fill:#00B4D8,stroke:#0A2540,stroke-width:3px,color:#fff
+    style OPIK1 fill:#1B3B5F,stroke:#0A2540,stroke-width:2px,color:#fff
+    style OPIK2 fill:#1B3B5F,stroke:#0A2540,stroke-width:2px,color:#fff
+    style OPIK3 fill:#1B3B5F,stroke:#0A2540,stroke-width:2px,color:#fff
+    style OPIK4 fill:#1B3B5F,stroke:#0A2540,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Agent Pipeline Sequence with Feedback</div>
+                    <div class="mermaid">
+sequenceDiagram
+    participant Data as Transaction Data
+    participant Ingest as Ingestion Agent
+    participant Cat as Categorization Agent
+    participant Gemini as Gemini LLM
+    participant Pattern as Pattern Agent
+    participant Reason as Reasoning Agent
+    participant Plan as Planning Agent
+    participant Opik as Opik Tracer
+    participant DB as Database
+    participant User as User Interface
+    
+    Data->>Ingest: New transactions
+    Ingest->>Ingest: Validate & normalize
+    Ingest->>DB: Store raw data
+    Ingest->>Cat: Trigger categorization
+    
+    Cat->>Gemini: Categorize transactions
+    Gemini-->>Cat: Categories + reasoning
+    Cat->>Opik: Log categorization trace
+    Cat->>DB: Store categories
+    Cat->>Pattern: Trigger pattern detection
+    
+    Pattern->>DB: Fetch historical data
+    DB-->>Pattern: Transaction history
+    Pattern->>Pattern: Analyze patterns
+    Pattern->>Opik: Log pattern insights
+    Pattern->>DB: Store patterns
+    Pattern->>Reason: Trigger reasoning
+    
+    Reason->>DB: Fetch budget & goals
+    DB-->>Reason: Financial context
+    Reason->>Gemini: Analyze financial state
+    Gemini-->>Reason: Reasoning insights
+    Reason->>Opik: Log reasoning trace
+    Reason->>Plan: Trigger planning
+    
+    Plan->>Gemini: Generate action plan
+    Gemini-->>Plan: Prioritized actions
+    Plan->>Plan: Calculate impact
+    Plan->>Opik: Log decision trace
+    Plan->>DB: Store recommendation
+    Plan->>User: Display recommendation
+    
+    User->>Plan: Provide feedback
+    Plan->>Opik: Log feedback signal
+    Plan->>Reason: Adapt future reasoning
+    
+    style Cat fill:#0066CC,stroke:#0A2540,stroke-width:2px
+    style Pattern fill:#0066CC,stroke:#0A2540,stroke-width:2px
+    style Reason fill:#0066CC,stroke:#0A2540,stroke-width:2px
+    style Plan fill:#0066CC,stroke:#0A2540,stroke-width:2px
+    style Gemini fill:#00B4D8,stroke:#0A2540,stroke-width:2px
+    style Opik fill:#1B3B5F,stroke:#0A2540,stroke-width:2px
+                    </div>
+                </div>
+            </section>
+
+            <!-- 9. Multi-Agent Collaboration -->
+            <section id="multi-agent" class="diagram-section">
+                <div class="section-header">
+                    <h2>Multi-Agent Collaboration</h2>
+                    <p>Inter-agent communication, shared context, and collaborative decision-making</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Agent Communication Network</div>
+                    <div class="mermaid">
+graph TB
+    subgraph "Shared Resources"
+        SHARED_MEM[Shared Memory Store]
+        CONTEXT_BUS[Context Bus]
+        EVENT_QUEUE[Event Queue]
+    end
+    
+    subgraph "Agent Network"
+        CAT[Categorization Agent]
+        PAT[Pattern Agent]
+        REA[Reasoning Agent]
+        PLA[Planning Agent]
+    end
+    
+    subgraph "Coordination Layer"
+        COORDINATOR[Agent Coordinator]
+        MSG_BROKER[Message Broker]
+        STATE_MGR[State Manager]
+    end
+    
+    subgraph "External Intelligence"
+        LLM[Gemini LLM]
+        KNOWLEDGE[Knowledge Base]
+    end
+    
+    CAT <-->|Share categorizations| SHARED_MEM
+    PAT <-->|Share patterns| SHARED_MEM
+    REA <-->|Share insights| SHARED_MEM
+    PLA <-->|Share decisions| SHARED_MEM
+    
+    CAT -->|Publish event| EVENT_QUEUE
+    PAT -->|Publish event| EVENT_QUEUE
+    REA -->|Publish event| EVENT_QUEUE
+    PLA -->|Publish event| EVENT_QUEUE
+    
+    EVENT_QUEUE --> COORDINATOR
+    COORDINATOR --> MSG_BROKER
+    MSG_BROKER -->|Route message| CAT
+    MSG_BROKER -->|Route message| PAT
+    MSG_BROKER -->|Route message| REA
+    MSG_BROKER -->|Route message| PLA
+    
+    COORDINATOR --> STATE_MGR
+    STATE_MGR --> CONTEXT_BUS
+    CONTEXT_BUS --> CAT
+    CONTEXT_BUS --> PAT
+    CONTEXT_BUS --> REA
+    CONTEXT_BUS --> PLA
+    
+    CAT -.Query.-> LLM
+    REA -.Query.-> LLM
+    PLA -.Query.-> LLM
+    
+    PAT -.Access.-> KNOWLEDGE
+    REA -.Access.-> KNOWLEDGE
+    
+    style COORDINATOR fill:#0066CC,stroke:#0A2540,stroke-width:3px,color:#fff
+    style SHARED_MEM fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style LLM fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style MSG_BROKER fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Agent Collaboration Sequence</div>
+                    <div class="mermaid">
+sequenceDiagram
+    participant Coord as Coordinator
+    participant Cat as Categorization
+    participant Pat as Pattern
+    participant Rea as Reasoning
+    participant Pla as Planning
+    participant Mem as Memory
+    
+    Coord->>Cat: Initialize categorization
+    Cat->>Cat: Process transactions
+    Cat->>Mem: Store categories
+    Cat->>Coord: Categorization complete
+    
+    Coord->>Pat: Trigger pattern detection
+    Pat->>Mem: Read categories
+    Pat->>Pat: Detect patterns
+    Pat->>Mem: Store patterns
+    Pat->>Coord: Patterns detected
+    
+    Coord->>Rea: Trigger reasoning
+    Rea->>Mem: Read categories & patterns
+    Rea->>Rea: Analyze financial state
+    Rea->>Mem: Store insights
+    Rea->>Coord: Reasoning complete
+    
+    Coord->>Pla: Trigger planning
+    Pla->>Mem: Read all context
+    Pla->>Pla: Generate action plan
+    Pla->>Mem: Store recommendation
+    Pla->>Coord: Planning complete
+    
+    Coord->>Coord: Pipeline success
+    
+    style Coord fill:#0066CC,stroke:#0A2540,stroke-width:2px
+    style Mem fill:#2E5C8A,stroke:#0A2540,stroke-width:2px
+                    </div>
+                </div>
+            </section>
+
+            <!-- 10. Planner-Reasoner-Evaluator Loop -->
+            <section id="planner-loop" class="diagram-section">
+                <div class="section-header">
+                    <h2>Planner–Reasoner–Evaluator Agent Loop</h2>
+                    <p>Continuous feedback loop for adaptive decision-making and plan refinement</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Adaptive Agent Loop</div>
+                    <div class="mermaid">
+graph TB
+    START[Financial Context] --> REASONER
+    
+    subgraph "Reasoning Phase"
+        REASONER[Financial Reasoner]
+        REASONER --> ANALYZE[Analyze Current State]
+        ANALYZE --> IDENTIFY[Identify Opportunities]
+        IDENTIFY --> CONSTRAINTS[Evaluate Constraints]
+    end
+    
+    CONSTRAINTS --> PLANNER
+    
+    subgraph "Planning Phase"
+        PLANNER[Action Planner]
+        PLANNER --> GENERATE[Generate Options]
+        GENERATE --> PRIORITIZE[Prioritize Actions]
+        PRIORITIZE --> SIMULATE[Simulate Impact]
+    end
+    
+    SIMULATE --> EVALUATOR
+    
+    subgraph "Evaluation Phase"
+        EVALUATOR[Decision Evaluator]
+        EVALUATOR --> FEASIBILITY[Check Feasibility]
+        FEASIBILITY --> IMPACT_EVAL[Evaluate Impact]
+        IMPACT_EVAL --> RISK_EVAL[Assess Risk]
+    end
+    
+    RISK_EVAL --> DECISION{Decision Quality?}
+    
+    DECISION -->|High Confidence| OUTPUT[Final Recommendation]
+    DECISION -->|Low Confidence| REFINE[Refine Parameters]
+    REFINE --> REASONER
+    
+    OUTPUT --> USER_FEEDBACK[User Feedback]
+    USER_FEEDBACK --> LEARNING[Update Knowledge]
+    LEARNING --> MEMORY[Agent Memory]
+    MEMORY -.Inform.-> REASONER
+    
+    REASONER -.Query.-> LLM[Gemini LLM]
+    PLANNER -.Query.-> LLM
+    EVALUATOR -.Query.-> LLM
+    
+    REASONER -.Log.-> OPIK[Opik Tracer]
+    PLANNER -.Log.-> OPIK
+    EVALUATOR -.Log.-> OPIK
+    
+    style REASONER fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style PLANNER fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style EVALUATOR fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style OUTPUT fill:#00B4D8,stroke:#0A2540,stroke-width:3px,color:#fff
+    style LLM fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+    style OPIK fill:#1B3B5F,stroke:#0A2540,stroke-width:2px,color:#fff
+    style MEMORY fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Loop Iteration Flow</div>
+                    <div class="mermaid">
+sequenceDiagram
+    participant Context as Financial Context
+    participant Reasoner as Reasoner Agent
+    participant Planner as Planner Agent
+    participant Evaluator as Evaluator Agent
+    participant LLM as Gemini
+    participant Memory as Agent Memory
+    participant User as User
+    
+    Context->>Reasoner: Current financial state
+    Reasoner->>LLM: Analyze opportunities
+    LLM-->>Reasoner: Insights & constraints
+    Reasoner->>Memory: Store reasoning
+    
+    Reasoner->>Planner: Reasoning output
+    Planner->>LLM: Generate action plans
+    LLM-->>Planner: Multiple options
+    Planner->>Planner: Prioritize & simulate
+    Planner->>Memory: Store plans
+    
+    Planner->>Evaluator: Top plan candidate
+    Evaluator->>Evaluator: Check feasibility
+    Evaluator->>LLM: Evaluate impact & risk
+    LLM-->>Evaluator: Quality score
+    
+    alt High Confidence
+        Evaluator->>User: Present recommendation
+        User-->>Evaluator: Provide feedback
+        Evaluator->>Memory: Update knowledge
+    else Low Confidence
+        Evaluator->>Reasoner: Refine parameters
+        Note over Reasoner,Planner: Loop iteration
+    end
+    
+    style Reasoner fill:#0066CC,stroke:#0A2540,stroke-width:2px
+    style Planner fill:#0066CC,stroke:#0A2540,stroke-width:2px
+    style Evaluator fill:#0066CC,stroke:#0A2540,stroke-width:2px
+    style LLM fill:#00B4D8,stroke:#0A2540,stroke-width:2px
+                    </div>
+                </div>
+            </section>
+
+            <!-- 11. Financial Reasoning Pipeline -->
+            <section id="reasoning-pipeline" class="diagram-section">
+                <div class="section-header">
+                    <h2>Financial Reasoning Pipeline</h2>
+                    <p>LLM-powered financial analysis, trade-off evaluation, and insight generation</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Multi-Stage Reasoning Flow</div>
+                    <div class="mermaid">
+graph LR
+    A[Financial Data] --> B[Context Assembly]
+    B --> B1[User Profile]
+    B --> B2[Transaction History]
+    B --> B3[Budget Status]
+    B --> B4[Goals & Targets]
+    
+    B1 --> C[Stage 1: Budget Analysis]
+    B2 --> C
+    B3 --> C
+    
+    C --> C1[Spending vs Budget]
+    C1 --> C2[Category Breakdown]
+    C2 --> C3[Trend Analysis]
+    
+    C3 --> D[Stage 2: Goal Evaluation]
+    B4 --> D
+    
+    D --> D1[Progress Assessment]
+    D1 --> D2[Timeline Evaluation]
+    D2 --> D3[Gap Analysis]
+    
+    D3 --> E[Stage 3: Trade-off Analysis]
+    
+    E --> E1[Opportunity Cost]
+    E1 --> E2[Priority Conflicts]
+    E2 --> E3[Impact Scenarios]
+    
+    E3 --> F[Stage 4: Insight Generation]
+    
+    F --> F1[Key Findings]
+    F1 --> F2[Action Items]
+    F2 --> F3[Explanations]
+    
+    F3 --> G[Reasoning Output]
+    
+    C -.LLM.-> LLM[Gemini]
+    D -.LLM.-> LLM
+    E -.LLM.-> LLM
+    F -.LLM.-> LLM
+    
+    style C fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style D fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style E fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style F fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style G fill:#00B4D8,stroke:#0A2540,stroke-width:3px,color:#fff
+    style LLM fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">LLM-Powered Reasoning</div>
+                    <div class="mermaid">
+sequenceDiagram
+    participant Agent
+    participant Prompt
+    participant LLM
+    participant Parser
+    participant Validator
+    participant Store
+    
+    Agent->>Prompt: Build reasoning prompt
+    Note over Prompt: Add context and constraints
+    Prompt->>Prompt: Add reasoning instructions
+    
+    Prompt->>LLM: Send structured prompt
+    LLM->>LLM: Process reasoning task
+    LLM-->>Parser: LLM response
+    
+    Parser->>Parser: Extract insights
+    Parser->>Parser: Parse JSON structure
+    Parser->>Validator: Validate output
+    
+    alt Valid Output
+        Validator->>Store: Store reasoning
+        Validator->>Agent: Return insights
+    else Invalid Output
+        Validator->>Prompt: Retry with clarification
+        Prompt->>LLM: Refined prompt
+    end
+    
+    style Agent fill:#0066CC,stroke:#0A2540,stroke-width:2px
+    style LLM fill:#00B4D8,stroke:#0A2540,stroke-width:2px
+    style Store fill:#2E5C8A,stroke:#0A2540,stroke-width:2px
+                    </div>
+                </div>
+            </section>
+
+            <!-- 12. Transaction Data Processing Flow -->
+            <section id="transaction-processing" class="diagram-section">
+                <div class="section-header">
+                    <h2>Transaction Data Processing Flow</h2>
+                    <p>End-to-end transaction processing from ingestion to actionable insights</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Complete Processing Pipeline</div>
+                    <div class="mermaid">
+graph TB
+    A[Raw Transaction] --> B[Ingestion Layer]
+    B --> B1[Schema Validation]
+    B1 --> B2[Data Cleaning]
+    B2 --> B3[Normalization]
+    
+    B3 --> C[Enrichment Layer]
+    C --> C1[Merchant Matching]
+    C1 --> C2[Location Data]
+    C2 --> C3[Metadata Addition]
+    
+    C3 --> D[Categorization Layer]
+    D --> D1[LLM Analysis]
+    D1 --> D2[Category Assignment]
+    D2 --> D3[Confidence Scoring]
+    
+    D3 --> E[Analysis Layer]
+    E --> E1[Temporal Grouping]
+    E1 --> E2[Statistical Analysis]
+    E2 --> E3[Pattern Matching]
+    
+    E3 --> F[Intelligence Layer]
+    F --> F1[Behavioral Detection]
+    F1 --> F2[Anomaly Flagging]
+    F2 --> F3[Trend Projection]
+    
+    F3 --> G[Storage Layer]
+    G --> G1[Database Write]
+    G1 --> G2[Index Update]
+    G2 --> G3[Cache Refresh]
+    
+    G3 --> H[Output]
+    H --> H1[Dashboard Update]
+    H1 --> H2[Notification Trigger]
+    H2 --> H3[Agent Trigger]
+    
+    D1 -.Query.-> LLM[Gemini]
+    F1 -.Query.-> LLM
+    
+    style B fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style C fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style D fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style E fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style F fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style G fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style LLM fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+            </section>
+
+            <!-- 13. Feature Extraction & Enrichment -->
+            <section id="feature-extraction" class="diagram-section">
+                <div class="section-header">
+                    <h2>Feature Extraction & Enrichment Flow</h2>
+                    <p>Automated feature engineering and data enrichment for enhanced intelligence</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Feature Engineering Pipeline</div>
+                    <div class="mermaid">
+graph TB
+    A[Transaction Data] --> B[Feature Extraction]
+    
+    subgraph "Temporal Features"
+        B --> T1[Day of Week]
+        B --> T2[Time of Day]
+        B --> T3[Month/Quarter]
+        B --> T4[Holiday Proximity]
+    end
+    
+    subgraph "Amount Features"
+        B --> A1[Amount Buckets]
+        B --> A2[Relative to Average]
+        B --> A3[Percentage of Income]
+        B --> A4[Cumulative Totals]
+    end
+    
+    subgraph "Category Features"
+        B --> C1[Primary Category]
+        B --> C2[Sub-category]
+        B --> C3[Spending Type]
+        B --> C4[Necessity Score]
+    end
+    
+    subgraph "Merchant Features"
+        B --> M1[Merchant Name]
+        B --> M2[Merchant Category]
+        B --> M3[Location]
+        B --> M4[Frequency]
+    end
+    
+    subgraph "Behavioral Features"
+        B --> BH1[Purchase Pattern]
+        B --> BH2[Spending Velocity]
+        B --> BH3[Impulse Score]
+        B --> BH4[Correlation Index]
+    end
+    
+    T1 --> ENRICH[Enrichment Layer]
+    T2 --> ENRICH
+    T3 --> ENRICH
+    T4 --> ENRICH
+    A1 --> ENRICH
+    A2 --> ENRICH
+    A3 --> ENRICH
+    A4 --> ENRICH
+    C1 --> ENRICH
+    C2 --> ENRICH
+    C3 --> ENRICH
+    C4 --> ENRICH
+    M1 --> ENRICH
+    M2 --> ENRICH
+    M3 --> ENRICH
+    M4 --> ENRICH
+    BH1 --> ENRICH
+    BH2 --> ENRICH
+    BH3 --> ENRICH
+    BH4 --> ENRICH
+    
+    ENRICH --> VECTOR[Feature Vector]
+    VECTOR --> STORE[(Feature Store)]
+    STORE --> AGENTS[Agent System]
+    
+    style B fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style ENRICH fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style VECTOR fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style STORE fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Enrichment Process</div>
+                    <div class="mermaid">
+sequenceDiagram
+    participant Trans
+    participant Extractor
+    participant Enricher
+    participant External
+    participant Store
+    participant Agent
+    
+    Trans->>Extractor: Raw transaction
+    Extractor->>Extractor: Extract temporal features
+    Extractor->>Extractor: Extract amount features
+    Extractor->>Extractor: Extract behavioral features
+    
+    Extractor->>Enricher: Feature set
+    Enricher->>External: Merchant lookup
+    External-->>Enricher: Merchant data
+    Enricher->>Enricher: Calculate derived features
+    Enricher->>Enricher: Normalize values
+    
+    Enricher->>Store: Store feature vector
+    Store-->>Agent: Features available
+    Agent->>Agent: Use for pattern detection
+    
+    style Extractor fill:#0066CC,stroke:#0A2540,stroke-width:2px
+    style Enricher fill:#2E5C8A,stroke:#0A2540,stroke-width:2px
+    style Store fill:#00B4D8,stroke:#0A2540,stroke-width:2px
+                    </div>
+                </div>
+            </section>
+
+            <!-- 14. Memory & Context Management -->
+            <section id="memory-management" class="diagram-section">
+                <div class="section-header">
+                    <h2>Memory & Context Management</h2>
+                    <p>Agent memory systems, context persistence, and knowledge retention strategies</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Multi-Tier Memory Architecture</div>
+                    <div class="mermaid">
+graph TB
+    subgraph "Working Memory - Short Term"
+        SESSION[Session Context]
+        ACTIVE_TRANS[Active Transactions]
+        CURRENT_ANALYSIS[Current Analysis]
+    end
+    
+    subgraph "Episodic Memory - Medium Term"
+        RECENT_PATTERNS[Recent Patterns]
+        USER_INTERACTIONS[User Interactions]
+        FEEDBACK_HISTORY[Feedback History]
+    end
+    
+    subgraph "Semantic Memory - Long Term"
+        USER_PROFILE[User Profile]
+        SPENDING_PATTERNS[Spending Patterns]
+        PREFERENCE_MODEL[Preference Model]
+        FINANCIAL_GOALS[Financial Goals]
+    end
+    
+    subgraph "Agent Memory Manager"
+        MEMORY_CTRL[Memory Controller]
+        CONSOLIDATION[Memory Consolidation]
+        RETRIEVAL[Context Retrieval]
+    end
+    
+    subgraph "Storage Layer"
+        CACHE[(Redis Cache)]
+        DB[(PostgreSQL)]
+        VECTOR_DB[(Vector Store)]
+    end
+    
+    SESSION --> MEMORY_CTRL
+    ACTIVE_TRANS --> MEMORY_CTRL
+    CURRENT_ANALYSIS --> MEMORY_CTRL
+    
+    RECENT_PATTERNS --> MEMORY_CTRL
+    USER_INTERACTIONS --> MEMORY_CTRL
+    FEEDBACK_HISTORY --> MEMORY_CTRL
+    
+    USER_PROFILE --> MEMORY_CTRL
+    SPENDING_PATTERNS --> MEMORY_CTRL
+    PREFERENCE_MODEL --> MEMORY_CTRL
+    FINANCIAL_GOALS --> MEMORY_CTRL
+    
+    MEMORY_CTRL --> CONSOLIDATION
+    CONSOLIDATION --> RETRIEVAL
+    
+    SESSION -.Store.-> CACHE
+    ACTIVE_TRANS -.Store.-> CACHE
+    
+    RECENT_PATTERNS -.Store.-> DB
+    USER_INTERACTIONS -.Store.-> DB
+    FEEDBACK_HISTORY -.Store.-> DB
+    
+    USER_PROFILE -.Store.-> DB
+    SPENDING_PATTERNS -.Store.-> VECTOR_DB
+    PREFERENCE_MODEL -.Store.-> VECTOR_DB
+    
+    RETRIEVAL -.Read.-> CACHE
+    RETRIEVAL -.Read.-> DB
+    RETRIEVAL -.Read.-> VECTOR_DB
+    
+    RETRIEVAL --> AGENTS[Agent System]
+    
+    style MEMORY_CTRL fill:#0066CC,stroke:#0A2540,stroke-width:3px,color:#fff
+    style CONSOLIDATION fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style CACHE fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style DB fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style VECTOR_DB fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Context Lifecycle</div>
+                    <div class="mermaid">
+stateDiagram-v2
+    [*] --> Active: New Context
+    Active --> Cached: Move to Cache
+    Cached --> Archived: Consolidate
+    Archived --> Retrieved: Context Needed
+    Retrieved --> Active: Reactivate
+    Archived --> [*]: Expired
+    
+    Active: Active Working Memory
+    Cached: Short-term Cache
+    Archived: Long-term Storage
+    Retrieved: Context Retrieval
+    
+    note right of Active
+        Current session data
+        Immediate agent use
+    end note
+    
+    note right of Cached
+        Recent history
+        Quick access
+    end note
+    
+    note right of Archived
+        Historical patterns
+        Persistent knowledge
+    end note
+                    </div>
+                </div>
+            </section>
+
+            <!-- 15. Recommendation Generation Flow -->
+            <section id="recommendation-flow" class="diagram-section">
+                <div class="section-header">
+                    <h2>Recommendation Generation Flow</h2>
+                    <p>End-to-end process for creating prioritized, explainable financial recommendations</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Recommendation Pipeline</div>
+                    <div class="mermaid">
+graph TB
+    A[Trigger: Pattern/Insight] --> B[Context Gathering]
+    
+    B --> B1[User Profile]
+    B --> B2[Financial State]
+    B --> B3[Historical Patterns]
+    B --> B4[Current Goals]
+    
+    B1 --> C[Recommendation Generation]
+    B2 --> C
+    B3 --> C
+    B4 --> C
+    
+    C --> C1[LLM Analysis]
+    C1 --> C2[Generate Options]
+    C2 --> C3[Impact Simulation]
+    
+    C3 --> D[Prioritization Engine]
+    D --> D1[Score by Impact]
+    D1 --> D2[Score by Feasibility]
+    D2 --> D3[Score by Urgency]
+    
+    D3 --> E[Select Top Action]
+    E --> E1[Calculate Expected Impact]
+    E1 --> E2[Generate Explanation]
+    E2 --> E3[Create Action Steps]
+    
+    E3 --> F[Quality Check]
+    F --> F1{Meets Standards?}
+    
+    F1 -->|Yes| G[Format Output]
+    F1 -->|No| C[Regenerate]
+    
+    G --> G1[Add Reasoning Trace]
+    G1 --> G2[Add Supporting Data]
+    G2 --> G3[Add Confidence Score]
+    
+    G3 --> H[Store Recommendation]
+    H --> H1[(Database)]
+    H1 --> I[Deliver to User]
+    
+    C1 -.Query.-> LLM[Gemini]
+    E2 -.Query.-> LLM
+    
+    C -.Log.-> OPIK[Opik]
+    D -.Log.-> OPIK
+    E -.Log.-> OPIK
+    G -.Log.-> OPIK
+    
+    style C fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style D fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style E fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style G fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style LLM fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+    style OPIK fill:#1B3B5F,stroke:#0A2540,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Explainability Generation</div>
+                    <div class="mermaid">
+sequenceDiagram
+    participant Agent
+    participant Explainer
+    participant LLM
+    participant Validator
+    participant User
+    
+    Agent->>Explainer: Recommendation and Context
+    Explainer->>Explainer: Extract key factors
+    Explainer->>Explainer: Build reasoning chain
+    
+    Explainer->>LLM: Generate explanation
+    Note over LLM: Generate reasoning
+    LLM-->>Explainer: Natural language explanation
+    
+    Explainer->>Explainer: Add supporting evidence
+    Explainer->>Explainer: Add counterfactuals
+    Explainer->>Explainer: Add confidence intervals
+    
+    Explainer->>Validator: Validate explanation
+    
+    alt Complete & Clear
+        Validator->>User: Display explanation
+        User-->>Agent: User understands
+    else Incomplete
+        Validator->>Explainer: Add more details
+        Explainer->>LLM: Clarify explanation
+    end
+    
+    style Agent fill:#0066CC,stroke:#0A2540,stroke-width:2px
+    style Explainer fill:#2E5C8A,stroke:#0A2540,stroke-width:2px
+    style LLM fill:#00B4D8,stroke:#0A2540,stroke-width:2px
+                    </div>
+                </div>
+            </section>
+
+            <!-- 16. Data Lifecycle Diagram -->
+            <section id="data-lifecycle" class="diagram-section">
+                <div class="section-header">
+                    <h2>Data Lifecycle Management</h2>
+                    <p>Complete data journey from ingestion through archival and compliance</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Complete Data Lifecycle</div>
+                    <div class="mermaid">
+graph TB
+    A[Data Ingestion] --> B[Validation & Cleaning]
+    B --> C{Valid?}
+    
+    C -->|No| ERR[Error Handling]
+    ERR --> LOG[Error Logging]
+    LOG --> NOTIFY[Notify User]
+    
+    C -->|Yes| D[Active Storage]
+    D --> D1[Transactional DB]
+    D1 --> E[Processing]
+    
+    E --> E1[Categorization]
+    E --> E2[Pattern Detection]
+    E --> E3[Analysis]
+    
+    E1 --> F[Enriched Storage]
+    E2 --> F
+    E3 --> F
+    
+    F --> G[Active Use]
+    G --> G1[Dashboard Display]
+    G --> G2[Agent Analysis]
+    G --> G3[Report Generation]
+    
+    G --> H{Age Threshold?}
+    
+    H -->|< 90 days| G
+    H -->|> 90 days| I[Warm Storage]
+    
+    I --> I1[Compressed Format]
+    I1 --> J{Age > 1 year?}
+    
+    J -->|No| I
+    J -->|Yes| K[Cold Storage/Archive]
+    
+    K --> K1[Encrypted Archive]
+    K1 --> L{Retention Policy?}
+    
+    L -->|Keep| K
+    L -->|Delete| M[Secure Deletion]
+    M --> M1[Audit Log]
+    
+    G2 --> N[Anonymization]
+    N --> O[Analytics Storage]
+    O --> P[Aggregate Insights]
+    
+    style D fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style E fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style F fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style K fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+    style ERR fill:#dc2626,stroke:#0A2540,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Data State Transitions</div>
+                    <div class="mermaid">
+stateDiagram-v2
+    [*] --> Raw: Ingestion
+    Raw --> Validated: Validation
+    Validated --> Active: Storage
+    Active --> Enriched: Processing
+    Enriched --> InUse: Agent Analysis
+    InUse --> Warm: Age > 90 days
+    Warm --> Cold: Age > 1 year
+    Cold --> Archived: Compliance
+    Archived --> Deleted: Retention Expired
+    Deleted --> [*]
+    
+    InUse --> Anonymized: Privacy Transform
+    Anonymized --> Analytics: Research
+    
+    note right of Raw
+        Unprocessed data
+        Temporary storage
+    end note
+    
+    note right of Active
+        Fully accessible
+        High performance
+    end note
+    
+    note right of Warm
+        Compressed
+        Slower access
+    end note
+    
+    note right of Cold
+        Archived
+        Compliance storage
+    end note
+                    </div>
+                </div>
+            </section>
+            <!-- PHASE 3-A: OBSERVABILITY & EVALUATION SYSTEMS -->
+
+            <!-- 17. Opik Observability Architecture -->
+            <section id="opik-architecture" class="diagram-section">
+                <div class="section-header">
+                    <h2>Opik Observability Architecture</h2>
+                    <p>Complete observability infrastructure with Opik by Comet for agent tracing and evaluation</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Opik Integration Architecture</div>
+                    <div class="mermaid">
+graph TB
+    subgraph "ClarityLab Agent System"
+        CAT_AGENT[Categorization Agent]
+        PAT_AGENT[Pattern Agent]
+        REA_AGENT[Reasoning Agent]
+        PLA_AGENT[Planning Agent]
+    end
+    
+    subgraph "Instrumentation Layer"
+        TRACER[Opik Tracer]
+        SPAN_MGR[Span Manager]
+        CONTEXT_PROP[Context Propagation]
+    end
+    
+    subgraph "Data Collection"
+        TRACE_COLLECTOR[Trace Collector]
+        METRIC_COLLECTOR[Metrics Collector]
+        LOG_AGGREGATOR[Log Aggregator]
+        EVENT_STREAM[Event Stream]
+    end
+    
+    subgraph "Local Processing"
+        BUFFER[Trace Buffer]
+        ENRICHER[Data Enricher]
+        VALIDATOR[Schema Validator]
+        BATCHER[Batch Processor]
+    end
+    
+    subgraph "Opik Platform"
+        API[Opik API]
+        STORAGE[Trace Storage]
+        ANALYTICS[Analytics Engine]
+        DASHBOARD[Opik Dashboard]
+    end
+    
+    subgraph "Evaluation Layer"
+        EVAL_ENGINE[Evaluation Engine]
+        METRICS[Metric Calculators]
+        COMPARISON[A/B Comparison]
+        REPORTS[Evaluation Reports]
+    end
+    
+    subgraph "Alerting & Monitoring"
+        ALERT_MGR[Alert Manager]
+        ANOMALY_DETECT[Anomaly Detection]
+        NOTIFICATION[Notifications]
+    end
+    
+    CAT_AGENT --> TRACER
+    PAT_AGENT --> TRACER
+    REA_AGENT --> TRACER
+    PLA_AGENT --> TRACER
+    
+    TRACER --> SPAN_MGR
+    SPAN_MGR --> CONTEXT_PROP
+    
+    CONTEXT_PROP --> TRACE_COLLECTOR
+    CONTEXT_PROP --> METRIC_COLLECTOR
+    CONTEXT_PROP --> LOG_AGGREGATOR
+    CONTEXT_PROP --> EVENT_STREAM
+    
+    TRACE_COLLECTOR --> BUFFER
+    METRIC_COLLECTOR --> BUFFER
+    LOG_AGGREGATOR --> BUFFER
+    EVENT_STREAM --> BUFFER
+    
+    BUFFER --> ENRICHER
+    ENRICHER --> VALIDATOR
+    VALIDATOR --> BATCHER
+    
+    BATCHER --> API
+    API --> STORAGE
+    STORAGE --> ANALYTICS
+    ANALYTICS --> DASHBOARD
+    
+    STORAGE --> EVAL_ENGINE
+    EVAL_ENGINE --> METRICS
+    METRICS --> COMPARISON
+    COMPARISON --> REPORTS
+    
+    ANALYTICS --> ANOMALY_DETECT
+    ANOMALY_DETECT --> ALERT_MGR
+    ALERT_MGR --> NOTIFICATION
+    
+    REPORTS --> DASHBOARD
+    
+    style TRACER fill:#1B3B5F,stroke:#0A2540,stroke-width:3px,color:#fff
+    style API fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style DASHBOARD fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style EVAL_ENGINE fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style ALERT_MGR fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Trace Data Flow</div>
+                    <div class="mermaid">
+sequenceDiagram
+    participant Agent as Agent System
+    participant Tracer as Opik Tracer
+    participant Buffer as Local Buffer
+    participant API as Opik API
+    participant Storage as Opik Storage
+    participant UI as Opik Dashboard
+    
+    Agent->>Tracer: Start trace
+    Tracer->>Tracer: Generate trace ID
+    Tracer->>Tracer: Create span context
+    
+    Agent->>Tracer: Log LLM call
+    Tracer->>Tracer: Record input/output
+    Tracer->>Tracer: Capture metadata
+    
+    Agent->>Tracer: Log decision point
+    Tracer->>Tracer: Record reasoning
+    Tracer->>Tracer: Add tags
+    
+    Agent->>Tracer: End trace
+    Tracer->>Buffer: Store trace locally
+    
+    Buffer->>Buffer: Batch traces
+    Buffer->>API: Send batch
+    API->>Storage: Persist traces
+    
+    Storage->>UI: Update dashboard
+    UI-->>Agent: Display traces
+    
+    style Tracer fill:#1B3B5F,stroke:#0A2540,stroke-width:2px
+    style API fill:#0066CC,stroke:#0A2540,stroke-width:2px
+    style UI fill:#00B4D8,stroke:#0A2540,stroke-width:2px
+                    </div>
+                </div>
+            </section>
+
+            <!-- 18. Agent Trace & Evaluation Flow -->
+            <section id="agent-trace" class="diagram-section">
+                <div class="section-header">
+                    <h2>Agent Trace & Evaluation Flow</h2>
+                    <p>Detailed agent execution tracing, evaluation metrics, and quality assessment</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Complete Trace Lifecycle</div>
+                    <div class="mermaid">
+graph TB
+    A[Agent Execution Starts] --> B[Initialize Trace]
+    B --> B1[Generate Trace ID]
+    B1 --> B2[Create Parent Span]
+    B2 --> B3[Set Context]
+    
+    B3 --> C[Stage 1 Categorization]
+    C --> C1[Create Child Span]
+    C1 --> C2[Log Input Data]
+    C2 --> C3[Call Gemini LLM]
+    C3 --> C4[Log LLM Response]
+    C4 --> C5[Log Output + Metadata]
+    C5 --> C6[Close Span]
+    
+    C6 --> D[Agent Stage 2: Pattern Detection]
+    D --> D1[Create Child Span]
+    D1 --> D2[Log Input]
+    D2 --> D3[Execute Analysis]
+    D3 --> D4[Log Patterns Found]
+    D4 --> D5[Close Span]
+    
+    D5 --> E[Agent Stage 3: Reasoning]
+    E --> E1[Create Child Span]
+    E1 --> E2[Log Context]
+    E2 --> E3[Call Gemini LLM]
+    E3 --> E4[Log Reasoning]
+    E4 --> E5[Close Span]
+    
+    E5 --> F[Agent Stage 4: Planning]
+    F --> F1[Create Child Span]
+    F1 --> F2[Log Input]
+    F2 --> F3[Generate Plan]
+    F3 --> F4[Log Recommendation]
+    F4 --> F5[Close Span]
+    
+    F5 --> G[Close Parent Trace]
+    G --> G1[Calculate Duration]
+    G1 --> G2[Add Trace Tags]
+    G2 --> G3[Send to Opik]
+    
+    G3 --> H[Opik Processing]
+    H --> H1[Store Trace]
+    H1 --> H2[Index for Search]
+    H2 --> H3[Trigger Evaluation]
+    
+    H3 --> I[Evaluation Engine]
+    I --> I1[Calculate Latency]
+    I --> I2[Assess Quality]
+    I --> I3[Check Compliance]
+    I --> I4[Score Performance]
+    
+    I1 --> J[Evaluation Results]
+    I2 --> J
+    I3 --> J
+    I4 --> J
+    
+    J --> K[Store Metrics]
+    K --> L[Update Dashboard]
+    
+    style B fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style C fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style D fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style E fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style F fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style I fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style L fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Evaluation Metrics Framework</div>
+                    <div class="mermaid">
+graph LR
+    subgraph "Quality Metrics"
+        Q1[Recommendation Relevance]
+        Q2[Explanation Clarity]
+        Q3[Action Feasibility]
+        Q4[Consistency Score]
+    end
+    
+    subgraph "Performance Metrics"
+        P1[Latency per Stage]
+        P2[Token Usage]
+        P3[API Call Count]
+        P4[Processing Time]
+    end
+    
+    subgraph "Business Metrics"
+        B1[User Follow-Through]
+        B2[Budget Adherence]
+        B3[Goal Progress]
+        B4[Feedback Sentiment]
+    end
+    
+    subgraph "Technical Metrics"
+        T1[Error Rate]
+        T2[Retry Count]
+        T3[Cache Hit Rate]
+        T4[LLM Success Rate]
+    end
+    
+    subgraph "Evaluation Engine"
+        EVALUATOR[Metric Evaluator]
+    end
+    
+    Q1 --> EVALUATOR
+    Q2 --> EVALUATOR
+    Q3 --> EVALUATOR
+    Q4 --> EVALUATOR
+    P1 --> EVALUATOR
+    P2 --> EVALUATOR
+    P3 --> EVALUATOR
+    P4 --> EVALUATOR
+    B1 --> EVALUATOR
+    B2 --> EVALUATOR
+    B3 --> EVALUATOR
+    B4 --> EVALUATOR
+    T1 --> EVALUATOR
+    T2 --> EVALUATOR
+    T3 --> EVALUATOR
+    T4 --> EVALUATOR
+    
+    EVALUATOR --> SCORE[Composite Score]
+    SCORE --> REPORT[Evaluation Report]
+    REPORT --> OPIK[(Opik Dashboard)]
+    
+    style EVALUATOR fill:#0066CC,stroke:#0A2540,stroke-width:3px,color:#fff
+    style SCORE fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style OPIK fill:#1B3B5F,stroke:#0A2540,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+            </section>
+
+            <!-- 19. Feedback Loop & Human-in-the-Loop -->
+            <section id="feedback-loop" class="diagram-section">
+                <div class="section-header">
+                    <h2>Feedback Loop & Human-in-the-Loop</h2>
+                    <p>User feedback integration, agent adaptation, and continuous improvement cycle</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Feedback & Adaptation Loop</div>
+                    <div class="mermaid">
+graph TB
+    A[Agent Recommendation] --> B[Present to User]
+    
+    B --> C{User Action}
+    
+    C -->|Accepts| D[Mark as Followed]
+    C -->|Rejects| E[Mark as Rejected]
+    C -->|Modifies| F[Capture Modification]
+    C -->|Ignores| G[Mark as Ignored]
+    
+    D --> H[Collect Feedback]
+    E --> H
+    F --> H
+    G --> H
+    
+    H --> H1[User Rating]
+    H --> H2[Comment/Reason]
+    H --> H3[Outcome Data]
+    
+    H1 --> I[Feedback Processor]
+    H2 --> I
+    H3 --> I
+    
+    I --> I1[Sentiment Analysis]
+    I1 --> I2[Pattern Extraction]
+    I2 --> I3[Quality Score]
+    
+    I3 --> J[Store Feedback]
+    J --> J1[(Feedback DB)]
+    J1 --> J2[Opik Logging]
+    
+    J2 --> K[Evaluation Engine]
+    K --> K1[Analyze Success Rate]
+    K1 --> K2[Identify Failure Modes]
+    K2 --> K3[Generate Insights]
+    
+    K3 --> L[Adaptation Engine]
+    L --> L1[Update Prompts]
+    L1 --> L2[Adjust Priorities]
+    L2 --> L3[Refine Thresholds]
+    L3 --> L4[Update User Model]
+    
+    L4 --> M[Agent Memory Update]
+    M --> M1[User Preferences]
+    M1 --> M2[Behavioral Model]
+    M2 --> M3[Context History]
+    
+    M3 --> N[Improved Agent]
+    N --> A
+    
+    K --> O[Alert System]
+    O --> O1{Quality Drop?}
+    O1 -->|Yes| O2[Notify Team]
+    O1 -->|No| K
+    
+    style H fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style I fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style K fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style L fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+    style N fill:#0066CC,stroke:#0A2540,stroke-width:3px,color:#fff
+    style O2 fill:#dc2626,stroke:#0A2540,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Human-in-the-Loop Workflow</div>
+                    <div class="mermaid">
+sequenceDiagram
+    participant Agent as Agent System
+    participant UI as User Interface
+    participant User as User
+    participant Feedback as Feedback System
+    participant Opik as Opik Platform
+    participant Adapt as Adaptation Engine
+    participant Memory as Agent Memory
+    
+    Agent->>UI: Generate recommendation
+    UI->>User: Display with explanation
+    
+    User->>UI: Provide feedback
+    Note over User: Rating + Comment
+    
+    UI->>Feedback: Submit feedback
+    Feedback->>Feedback: Process sentiment
+    Feedback->>Opik: Log feedback event
+    
+    Feedback->>Adapt: Trigger analysis
+    Adapt->>Adapt: Analyze patterns
+    Adapt->>Adapt: Calculate adjustments
+    
+    Adapt->>Memory: Update user model
+    Memory-->>Agent: Updated preferences
+    
+    alt Low Rating Detected
+        Adapt->>Agent: Adjust strategy
+        Agent->>Opik: Log adaptation
+    end
+    
+    Agent->>UI: Next recommendation
+    Note over Agent: Informed by feedback
+    
+    style User fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px
+    style Feedback fill:#0066CC,stroke:#0A2540,stroke-width:2px
+    style Adapt fill:#00B4D8,stroke:#0A2540,stroke-width:2px
+    style Opik fill:#1B3B5F,stroke:#0A2540,stroke-width:2px
+                    </div>
+                </div>
+            </section>
+
+            <!-- 20. Metrics Collection & Monitoring -->
+            <section id="metrics-monitoring" class="diagram-section">
+                <div class="section-header">
+                    <h2>Metrics Collection & Monitoring Flow</h2>
+                    <p>Real-time metrics collection, aggregation, and monitoring infrastructure</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Metrics Collection Architecture</div>
+                    <div class="mermaid">
+graph TB
+    subgraph "Metric Sources"
+        AGENT_METRICS[Agent Metrics]
+        APP_METRICS[Application Metrics]
+        INFRA_METRICS[Infrastructure Metrics]
+        BUSINESS_METRICS[Business Metrics]
+    end
+    
+    subgraph "Collection Layer"
+        AGENT_COL[Agent Collector]
+        APP_COL[App Collector]
+        INFRA_COL[Infra Collector]
+        BIZ_COL[Business Collector]
+    end
+    
+    subgraph "Processing Pipeline"
+        AGGREGATOR[Metrics Aggregator]
+        TRANSFORMER[Data Transformer]
+        VALIDATOR[Validator]
+        ENRICHER[Enricher]
+    end
+    
+    subgraph "Storage"
+        TIME_SERIES[(Time-Series DB)]
+        OPIK_STORE[Opik Storage]
+        ANALYTICS_DB[(Analytics DB)]
+    end
+    
+    subgraph "Analysis"
+        REAL_TIME[Real-time Analyzer]
+        BATCH[Batch Processor]
+        TREND[Trend Analyzer]
+        ANOMALY[Anomaly Detector]
+    end
+    
+    subgraph "Visualization"
+        DASHBOARD[Opik Dashboard]
+        CUSTOM_VIZ[Custom Dashboards]
+        ALERTS[Alert Manager]
+        REPORTS[Report Generator]
+    end
+    
+    AGENT_METRICS --> AGENT_COL
+    APP_METRICS --> APP_COL
+    INFRA_METRICS --> INFRA_COL
+    BUSINESS_METRICS --> BIZ_COL
+    
+    AGENT_COL --> AGGREGATOR
+    APP_COL --> AGGREGATOR
+    INFRA_COL --> AGGREGATOR
+    BIZ_COL --> AGGREGATOR
+    
+    AGGREGATOR --> TRANSFORMER
+    TRANSFORMER --> VALIDATOR
+    VALIDATOR --> ENRICHER
+    
+    ENRICHER --> TIME_SERIES
+    ENRICHER --> OPIK_STORE
+    ENRICHER --> ANALYTICS_DB
+    
+    TIME_SERIES --> REAL_TIME
+    OPIK_STORE --> BATCH
+    ANALYTICS_DB --> TREND
+    
+    REAL_TIME --> ANOMALY
+    BATCH --> TREND
+    ANOMALY --> ALERTS
+    
+    REAL_TIME --> DASHBOARD
+    BATCH --> CUSTOM_VIZ
+    TREND --> REPORTS
+    
+    style AGGREGATOR fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style OPIK_STORE fill:#1B3B5F,stroke:#0A2540,stroke-width:2px,color:#fff
+    style ANOMALY fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style DASHBOARD fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Real-time Monitoring Flow</div>
+                    <div class="mermaid">
+sequenceDiagram
+    participant Agent as Agent System
+    participant Collector as Metric Collector
+    participant Processor as Stream Processor
+    participant Store as Time-Series DB
+    participant Analyzer as Anomaly Analyzer
+    participant Alert as Alert System
+    participant Dash as Dashboard
+    
+    loop Every Agent Execution
+        Agent->>Collector: Emit metrics
+        Note over Collector: Latency, tokens, etc.
+        Collector->>Processor: Stream metrics
+        
+        Processor->>Processor: Aggregate windowed data
+        Processor->>Store: Write time-series
+        
+        Store->>Analyzer: Real-time feed
+        Analyzer->>Analyzer: Check thresholds
+        
+        alt Anomaly Detected
+            Analyzer->>Alert: Trigger alert
+            Alert->>Alert: Send notification
+        end
+        
+        Store->>Dash: Update visualization
+        Dash->>Dash: Refresh metrics
+    end
+    
+    style Agent fill:#0066CC,stroke:#0A2540,stroke-width:2px
+    style Processor fill:#2E5C8A,stroke:#0A2540,stroke-width:2px
+    style Analyzer fill:#00B4D8,stroke:#0A2540,stroke-width:2px
+    style Alert fill:#dc2626,stroke:#0A2540,stroke-width:2px
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Key Performance Indicators</div>
+                    <div class="mermaid">
+graph LR
+    subgraph "Agent Performance KPIs"
+        A1[Avg Response Time]
+        A2[Token Efficiency]
+        A3[Success Rate]
+        A4[Error Rate]
+    end
+    
+    subgraph "Quality KPIs"
+        Q1[Recommendation Quality]
+        Q2[User Satisfaction]
+        Q3[Follow-Through Rate]
+        Q4[Accuracy Score]
+    end
+    
+    subgraph "Business KPIs"
+        B1[Budget Adherence]
+        B2[Savings Achieved]
+        B3[Goal Completion]
+        B4[User Engagement]
+    end
+    
+    subgraph "System Health KPIs"
+        S1[API Uptime]
+        S2[Database Latency]
+        S3[Cache Hit Rate]
+        S4[Error Recovery]
+    end
+    
+    A1 --> MONITOR[Monitoring System]
+    A2 --> MONITOR
+    A3 --> MONITOR
+    A4 --> MONITOR
+    Q1 --> MONITOR
+    Q2 --> MONITOR
+    Q3 --> MONITOR
+    Q4 --> MONITOR
+    B1 --> MONITOR
+    B2 --> MONITOR
+    B3 --> MONITOR
+    B4 --> MONITOR
+    S1 --> MONITOR
+    S2 --> MONITOR
+    S3 --> MONITOR
+    S4 --> MONITOR
+    
+    MONITOR --> OPIK[Opik Dashboard]
+    MONITOR --> ALERTS[Alert System]
+    
+    style MONITOR fill:#0066CC,stroke:#0A2540,stroke-width:3px,color:#fff
+    style OPIK fill:#1B3B5F,stroke:#0A2540,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+            </section>
+
+            <!-- 21. End-to-End User Journey -->
+            <section id="user-journey" class="diagram-section">
+                <div class="section-header">
+                    <h2>End-to-End User Journey Flow</h2>
+                    <p>Complete user interaction journey from onboarding through continuous engagement</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Complete User Journey</div>
+                    <div class="mermaid">
+graph TB
+    A[User Visits ClarityLab] --> B[Authentication]
+    B --> B1{New User?}
+    
+    B1 -->|Yes| C[Onboarding Flow]
+    B1 -->|No| M[Dashboard]
+    
+    C --> C1[Create Profile]
+    C1 --> C2[Set Financial Goals]
+    C2 --> C3[Configure Budget]
+    C3 --> C4[Connect Data Source]
+    
+    C4 --> D{Data Source}
+    D -->|Plaid| E[Bank Connection]
+    D -->|Manual| F[Upload CSV]
+    D -->|Entry| G[Manual Input]
+    
+    E --> H[Data Ingestion]
+    F --> H
+    G --> H
+    
+    H --> H1[Validation & Processing]
+    H1 --> I[Initial Analysis]
+    
+    I --> I1[Categorization Agent]
+    I1 --> I2[Pattern Detection]
+    I2 --> I3[Financial Reasoning]
+    I3 --> I4[Generate Insights]
+    
+    I4 --> J[First Recommendation]
+    J --> M
+    
+    M --> M1[View Dashboard]
+    M1 --> M2[See Insights]
+    M2 --> M3[Review Recommendation]
+    
+    M3 --> N{User Action}
+    
+    N -->|View Details| O[Explanation View]
+    N -->|Accept| P[Mark Accepted]
+    N -->|Modify| Q[Adjust Plan]
+    N -->|Reject| R[Provide Feedback]
+    
+    O --> S[Deep Dive Analysis]
+    S --> S1[Spending Breakdown]
+    S1 --> S2[Trend Charts]
+    S2 --> S3[Goal Progress]
+    
+    P --> T[Track Compliance]
+    Q --> T
+    R --> U[Feedback Processing]
+    
+    U --> U1[Update Agent Model]
+    U1 --> V[Adapt Strategy]
+    
+    T --> W[Continuous Monitoring]
+    V --> W
+    
+    W --> W1[New Transactions]
+    W1 --> H
+    
+    W --> W2[Periodic Analysis]
+    W2 --> X[Generate New Insights]
+    X --> Y[New Recommendation]
+    Y --> M
+    
+    S --> Z[Export Reports]
+    
+    style C fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style I fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style M fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style U fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">User Journey Timeline</div>
+                    <div class="mermaid">
+sequenceDiagram
+    actor User
+    participant Auth
+    participant Onboard
+    participant Ingest
+    participant Agent
+    participant Dash
+    participant Opik
+    
+    User->>Auth: Sign up / Sign in
+    Auth-->>User: Session created
+    
+    alt New User
+        User->>Onboard: Complete profile
+        Onboard->>Onboard: Set goals & budget
+        User->>Ingest: Upload transactions
+        Ingest->>Agent: Trigger analysis
+        Agent->>Opik: Log initial analysis
+        Agent->>Dash: Generate baseline
+        Dash-->>User: Show initial insights
+    end
+    
+    User->>Dash: View dashboard
+    Dash-->>User: Display recommendations
+    
+    User->>Dash: View recommendation
+    Dash-->>User: Show explanation
+    
+    User->>Dash: Provide feedback
+    Dash->>Agent: Update model
+    Agent->>Opik: Log feedback
+    
+    loop Continuous Engagement
+        User->>Ingest: Add transactions
+        Ingest->>Agent: Process new data
+        Agent->>Opik: Log processing
+        Agent->>Dash: Update insights
+        Dash-->>User: Notify changes
+    end
+    
+    style User fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px
+    style Agent fill:#0066CC,stroke:#0A2540,stroke-width:2px
+    style Opik fill:#1B3B5F,stroke:#0A2540,stroke-width:2px
+                    </div>
+                </div>
+            </section>
+
+            <!-- 22. Backend Request-Response Flow -->
+            <section id="request-response" class="diagram-section">
+                <div class="section-header">
+                    <h2>Backend Request–Response Flow</h2>
+                    <p>Detailed HTTP request handling, middleware execution, and response generation</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Complete Request Lifecycle</div>
+                    <div class="mermaid">
+graph TB
+    A[Client Request] --> B[Next.js Edge Network]
+    B --> C[Middleware Stack]
+    
+    C --> C1[CORS Middleware]
+    C1 --> C2[Auth Middleware]
+    C2 --> C3[Rate Limiting]
+    C3 --> C4[Request Logging]
+    C4 --> C5[Input Validation]
+    
+    C5 --> D{Authenticated?}
+    D -->|No| E1[401 Unauthorized]
+    D -->|Yes| F{Rate Limit OK?}
+    
+    F -->|No| E2[429 Too Many Requests]
+    F -->|Yes| G[Route to API Handler]
+    
+    G --> H{Route Type}
+    H -->|Transaction| I[Transaction Service]
+    H -->|Agent| J[Agent Service]
+    H -->|User| K[User Service]
+    H -->|Insights| L[Insights Service]
+    
+    I --> M[Business Logic]
+    J --> M
+    K --> M
+    L --> M
+    
+    M --> M1[Validate Input]
+    M1 --> M2[Query Database]
+    M2 --> M3{Agent Required?}
+    
+    M3 -->|Yes| N[Trigger Agent]
+    M3 -->|No| O[Format Response]
+    
+    N --> N1[Agent Orchestrator]
+    N1 --> N2[Execute Agent Pipeline]
+    N2 --> N3[Log to Opik]
+    N3 --> N4[Store Results]
+    N4 --> O
+    
+    O --> O1[Add Metadata]
+    O1 --> O2[Set Headers]
+    O2 --> O3[Serialize JSON]
+    
+    O3 --> P[Response Middleware]
+    P --> P1[Compression]
+    P1 --> P2[Cache Headers]
+    P2 --> P3[Security Headers]
+    
+    P3 --> Q[Send Response]
+    
+    E1 --> R[Error Handler]
+    E2 --> R
+    M --> R
+    N --> R
+    
+    R --> R1[Log Error]
+    R1 --> R2[Format Error Response]
+    R2 --> Q
+    
+    Q --> S[Client Receives Response]
+    
+    C4 -.Log.-> LOG[Logging System]
+    N3 -.Trace.-> OPIK[Opik Platform]
+    R1 -.Alert.-> MONITOR[Monitoring]
+    
+    style C fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style M fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style N fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style R fill:#dc2626,stroke:#0A2540,stroke-width:2px,color:#fff
+    style OPIK fill:#1B3B5F,stroke:#0A2540,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Detailed Request-Response Sequence</div>
+                    <div class="mermaid">
+sequenceDiagram
+    participant Client
+    participant Edge
+    participant MW
+    participant API
+    participant Service
+    participant Agent
+    participant DB
+    participant LLM
+    participant Opik
+    
+    Client->>Edge: HTTP Request
+    Edge->>MW: Route request
+    
+    MW->>MW: CORS check
+    MW->>MW: Authenticate JWT
+    MW->>MW: Rate limit check
+    MW->>MW: Log request
+    
+    MW->>API: Forward request
+    API->>API: Parse body
+    API->>API: Validate schema
+    
+    API->>Service: Call service method
+    Service->>DB: Query data
+    DB-->>Service: Return data
+    
+    Service->>Agent: Trigger analysis
+    Agent->>LLM: LLM request
+    LLM-->>Agent: LLM response
+    Agent->>Opik: Log trace
+    Agent->>DB: Store result
+    Agent-->>Service: Analysis complete
+    
+    Service->>Service: Format response
+    Service-->>API: Return data
+    
+    API->>MW: Response data
+    MW->>MW: Add headers
+    MW->>MW: Compress
+    
+    MW->>Edge: HTTP response
+    Edge-->>Client: Response received
+    
+    style MW fill:#0066CC,stroke:#0A2540,stroke-width:2px
+    style Service fill:#2E5C8A,stroke:#0A2540,stroke-width:2px
+    style Agent fill:#00B4D8,stroke:#0A2540,stroke-width:2px
+    style Opik fill:#1B3B5F,stroke:#0A2540,stroke-width:2px
+                    </div>
+                </div>
+            </section>
+            <!-- PHASE 3-B: SECURITY, GOVERNANCE & ADVANCED FEATURES -->
+
+            <!-- 23. Security Boundary Diagram -->
+            <section id="security-boundary" class="diagram-section">
+                <div class="section-header">
+                    <h2>Security Boundary Diagram</h2>
+                    <p>Complete security architecture with trust boundaries, encryption layers, and access control</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Security Layers & Trust Boundaries</div>
+                    <div class="mermaid">
+graph TB
+    subgraph "Public Zone - Untrusted"
+        INTERNET[Internet]
+        CLIENT[Client Browser]
+    end
+    
+    subgraph "Edge Zone - DMZ"
+        CDN[Vercel Edge CDN]
+        WAF[Web Application Firewall]
+        RATE_LIMITER[Rate Limiter]
+        DDoS[DDoS Protection]
+    end
+    
+    subgraph "Application Zone - Trusted"
+        NEXTJS[Next.js Application]
+        AUTH[Authentication Layer]
+        API[API Gateway]
+        
+        subgraph "Auth Services"
+            NEXTAUTH[NextAuth]
+            JWT[JWT Validation]
+            SESSION[Session Manager]
+        end
+        
+        subgraph "Business Logic"
+            SERVICES[Business Services]
+            VALIDATORS[Input Validators]
+            SANITIZERS[Data Sanitizers]
+        end
+    end
+    
+    subgraph "Agent Zone - Highly Trusted"
+        AGENT_ORCHESTRATOR[Agent Orchestrator]
+        AGENT_PIPELINE[Agent Pipeline]
+        
+        subgraph "Agent Security"
+            PROMPT_GUARD[Prompt Injection Guard]
+            OUTPUT_FILTER[Output Filter]
+            SANDBOX[Execution Sandbox]
+        end
+    end
+    
+    subgraph "Data Zone - Restricted"
+        DB[(Encrypted Database)]
+        SECRETS[Secrets Manager]
+        ENCRYPTION[Encryption Service]
+        
+        subgraph "Data Protection"
+            PII_MASK[PII Masking]
+            ENCRYPTION_REST[Encryption at Rest]
+            BACKUP[Encrypted Backups]
+        end
+    end
+    
+    subgraph "External Zone - Controlled"
+        GEMINI[Gemini API]
+        PLAID[Plaid API]
+        OPIK[Opik Platform]
+        
+        subgraph "External Security"
+            API_KEY_MGR[API Key Manager]
+            TLS[TLS 1.3]
+            CERT_PIN[Certificate Pinning]
+        end
+    end
+    
+    INTERNET --> CDN
+    CLIENT --> CDN
+    
+    CDN --> WAF
+    WAF --> RATE_LIMITER
+    RATE_LIMITER --> DDoS
+    DDoS --> NEXTJS
+    
+    NEXTJS --> AUTH
+    AUTH --> NEXTAUTH
+    NEXTAUTH --> JWT
+    JWT --> SESSION
+    
+    SESSION --> API
+    API --> VALIDATORS
+    VALIDATORS --> SANITIZERS
+    SANITIZERS --> SERVICES
+    
+    SERVICES --> AGENT_ORCHESTRATOR
+    AGENT_ORCHESTRATOR --> PROMPT_GUARD
+    PROMPT_GUARD --> AGENT_PIPELINE
+    AGENT_PIPELINE --> OUTPUT_FILTER
+    OUTPUT_FILTER --> SANDBOX
+    
+    SERVICES --> ENCRYPTION
+    ENCRYPTION --> DB
+    DB --> PII_MASK
+    PII_MASK --> ENCRYPTION_REST
+    ENCRYPTION_REST --> BACKUP
+    
+    SERVICES --> SECRETS
+    
+    AGENT_PIPELINE --> API_KEY_MGR
+    API_KEY_MGR --> TLS
+    TLS --> GEMINI
+    TLS --> PLAID
+    TLS --> OPIK
+    TLS --> CERT_PIN
+    
+    style WAF fill:#dc2626,stroke:#0A2540,stroke-width:2px,color:#fff
+    style AUTH fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style ENCRYPTION fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style PROMPT_GUARD fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style SECRETS fill:#1B3B5F,stroke:#0A2540,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Threat Protection Flow</div>
+                    <div class="mermaid">
+sequenceDiagram
+    participant Attacker
+    participant WAF
+    participant Auth
+    participant API
+    participant Guard
+    participant Service
+    participant DB
+    
+    Attacker->>WAF: Malicious request
+    
+    alt SQL Injection Detected
+        WAF->>WAF: Block request
+        WAF-->>Attacker: 403 Forbidden
+    else XSS Attack
+        WAF->>WAF: Sanitize input
+        WAF->>Auth: Forward request
+        Auth->>Auth: Validate token
+        Auth-->>Attacker: 401 Unauthorized
+    else Rate Limit Exceeded
+        WAF->>WAF: Check rate limit
+        WAF-->>Attacker: 429 Too Many Requests
+    else Legitimate Request
+        WAF->>Auth: Pass through
+        Auth->>Auth: Verify credentials
+        Auth->>API: Authenticated
+        API->>Guard: Validate input
+        Guard->>Guard: Check prompt injection
+        Guard->>Service: Safe to process
+        Service->>DB: Query with parameterization
+        DB-->>Service: Encrypted data
+        Service-->>Attacker: Sanitized response
+    end
+    
+    style WAF fill:#dc2626,stroke:#0A2540,stroke-width:2px
+    style Auth fill:#0066CC,stroke:#0A2540,stroke-width:2px
+    style Guard fill:#00B4D8,stroke:#0A2540,stroke-width:2px
+                    </div>
+                </div>
+            </section>
+
+            <!-- 24. Data Privacy & Access Control -->
+            <section id="privacy-access" class="diagram-section">
+                <div class="section-header">
+                    <h2>Data Privacy & Access Control</h2>
+                    <p>Comprehensive privacy architecture with RBAC, data classification, and compliance controls</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Privacy Architecture</div>
+                    <div class="mermaid">
+graph TB
+    subgraph "Data Classification"
+        PUBLIC[Public Data]
+        INTERNAL[Internal Data]
+        CONFIDENTIAL[Confidential Data]
+        RESTRICTED[Restricted PII]
+    end
+    
+    subgraph "Access Control Layer"
+        RBAC[Role-Based Access Control]
+        ABAC[Attribute-Based Control]
+        POLICY_ENGINE[Policy Engine]
+    end
+    
+    subgraph "User Roles"
+        USER_ROLE[User]
+        ADMIN_ROLE[Admin]
+        SYSTEM_ROLE[System]
+        AGENT_ROLE[Agent Service]
+    end
+    
+    subgraph "Privacy Controls"
+        ANONYMIZATION[Data Anonymization]
+        PSEUDONYMIZATION[Pseudonymization]
+        REDACTION[PII Redaction]
+        MASKING[Data Masking]
+    end
+    
+    subgraph "Encryption"
+        TRANSIT[TLS in Transit]
+        REST[AES-256 at Rest]
+        FIELD[Field-Level Encryption]
+        KEY_MGR[Key Management]
+    end
+    
+    subgraph "Audit & Compliance"
+        AUDIT_LOG[Audit Logging]
+        ACCESS_LOG[Access Logs]
+        COMPLIANCE[Compliance Monitor]
+        RETENTION[Retention Policy]
+    end
+    
+    subgraph "Data Operations"
+        READ[Read Operation]
+        WRITE[Write Operation]
+        UPDATE[Update Operation]
+        DELETE[Delete Operation]
+    end
+    
+    PUBLIC --> RBAC
+    INTERNAL --> RBAC
+    CONFIDENTIAL --> ABAC
+    RESTRICTED --> ABAC
+    
+    RBAC --> POLICY_ENGINE
+    ABAC --> POLICY_ENGINE
+    
+    POLICY_ENGINE --> USER_ROLE
+    POLICY_ENGINE --> ADMIN_ROLE
+    POLICY_ENGINE --> SYSTEM_ROLE
+    POLICY_ENGINE --> AGENT_ROLE
+    
+    USER_ROLE --> READ
+    USER_ROLE --> WRITE
+    ADMIN_ROLE --> READ
+    ADMIN_ROLE --> UPDATE
+    ADMIN_ROLE --> DELETE
+    SYSTEM_ROLE --> READ
+    SYSTEM_ROLE --> WRITE
+    AGENT_ROLE --> READ
+    
+    RESTRICTED --> ANONYMIZATION
+    RESTRICTED --> PSEUDONYMIZATION
+    CONFIDENTIAL --> REDACTION
+    INTERNAL --> MASKING
+    
+    READ --> TRANSIT
+    WRITE --> TRANSIT
+    UPDATE --> TRANSIT
+    DELETE --> TRANSIT
+    
+    TRANSIT --> REST
+    REST --> FIELD
+    FIELD --> KEY_MGR
+    
+    READ --> AUDIT_LOG
+    WRITE --> AUDIT_LOG
+    UPDATE --> AUDIT_LOG
+    DELETE --> AUDIT_LOG
+    
+    AUDIT_LOG --> ACCESS_LOG
+    ACCESS_LOG --> COMPLIANCE
+    COMPLIANCE --> RETENTION
+    
+    style RESTRICTED fill:#dc2626,stroke:#0A2540,stroke-width:2px,color:#fff
+    style POLICY_ENGINE fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style FIELD fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style COMPLIANCE fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Access Control Flow</div>
+                    <div class="mermaid">
+sequenceDiagram
+    participant User
+    participant Auth
+    participant RBAC
+    participant Policy
+    participant Privacy
+    participant DB
+    participant Audit
+    
+    User->>Auth: Request access to data
+    Auth->>Auth: Validate JWT
+    Auth->>RBAC: Check user role
+    
+    RBAC->>Policy: Evaluate permissions
+    Policy->>Policy: Check resource policy
+    Policy->>Policy: Check data classification
+    
+    alt Authorized
+        Policy->>Privacy: Apply privacy controls
+        Privacy->>Privacy: Check if PII
+        
+        alt Contains PII
+            Privacy->>Privacy: Mask sensitive fields
+            Privacy->>Privacy: Redact PII
+        end
+        
+        Privacy->>DB: Fetch data
+        DB-->>Privacy: Encrypted data
+        Privacy->>Privacy: Decrypt with user key
+        Privacy-->>User: Return sanitized data
+        
+        Privacy->>Audit: Log access
+        Audit->>Audit: Record user, resource, time
+    else Unauthorized
+        Policy-->>User: 403 Forbidden
+        Policy->>Audit: Log unauthorized attempt
+    end
+    
+    style RBAC fill:#0066CC,stroke:#0A2540,stroke-width:2px
+    style Policy fill:#2E5C8A,stroke:#0A2540,stroke-width:2px
+    style Privacy fill:#00B4D8,stroke:#0A2540,stroke-width:2px
+                    </div>
+                </div>
+            </section>
+
+            <!-- 25. Failure Handling & Recovery Flow -->
+            <section id="failure-recovery" class="diagram-section">
+                <div class="section-header">
+                    <h2>Failure Handling & Recovery Flow</h2>
+                    <p>Comprehensive error handling, retry mechanisms, circuit breakers, and disaster recovery</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Error Handling Architecture</div>
+                    <div class="mermaid">
+graph TB
+    A[Operation Starts] --> B{Error Occurred?}
+    
+    B -->|No| SUCCESS[Operation Success]
+    B -->|Yes| C[Error Detection]
+    
+    C --> D{Error Type}
+    
+    D -->|Network Error| E[Network Handler]
+    D -->|LLM Error| F[LLM Handler]
+    D -->|Database Error| G[Database Handler]
+    D -->|Business Logic| H[Logic Handler]
+    D -->|Unknown| I[Generic Handler]
+    
+    E --> E1{Retryable?}
+    E1 -->|Yes| E2[Exponential Backoff]
+    E2 --> E3[Retry Operation]
+    E3 --> E4{Max Retries?}
+    E4 -->|No| A
+    E4 -->|Yes| E5[Circuit Breaker]
+    E1 -->|No| J[Log Error]
+    
+    F --> F1{Quota Error?}
+    F1 -->|Yes| F2[Wait & Retry]
+    F1 -->|No| F3{Invalid Output?}
+    F3 -->|Yes| F4[Retry with Better Prompt]
+    F3 -->|No| J
+    
+    G --> G1{Connection Lost?}
+    G1 -->|Yes| G2[Reconnect Pool]
+    G2 --> G3[Retry Query]
+    G1 -->|No| G4{Constraint Violation?}
+    G4 -->|Yes| J
+    G4 -->|No| G5[Rollback Transaction]
+    
+    H --> H1[Validate Input]
+    H1 --> H2[Safe Fallback]
+    H2 --> J
+    
+    I --> J
+    E5 --> J
+    F2 --> A
+    F4 --> A
+    G3 --> A
+    G5 --> J
+    
+    J --> K[Error Logger]
+    K --> K1[Structured Log]
+    K1 --> K2[Opik Trace]
+    K2 --> K3[Alert Manager]
+    
+    K3 --> L{Severity}
+    
+    L -->|Critical| M[Page On-Call]
+    L -->|High| N[Slack Alert]
+    L -->|Medium| O[Email Alert]
+    L -->|Low| P[Log Only]
+    
+    M --> Q[Incident Response]
+    N --> Q
+    O --> R[Monitoring Dashboard]
+    P --> R
+    
+    J --> S[Graceful Degradation]
+    S --> S1[Return Cached Data]
+    S1 --> S2[Simplified Response]
+    S2 --> S3[User Notification]
+    
+    style C fill:#dc2626,stroke:#0A2540,stroke-width:2px,color:#fff
+    style E5 fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style K fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style S fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Circuit Breaker Pattern</div>
+                    <div class="mermaid">
+stateDiagram-v2
+    [*] --> Closed: System Normal
+    
+    Closed --> Open: Failure Threshold Exceeded
+    Open --> HalfOpen: Timeout Elapsed
+    HalfOpen --> Closed: Success
+    HalfOpen --> Open: Failure
+    
+    state Closed {
+        [*] --> Monitoring
+        Monitoring --> CountingFailures: Request Failed
+        CountingFailures --> Monitoring: Request Success
+        CountingFailures --> [*]: Threshold Reached
+    }
+    
+    state Open {
+        [*] --> Rejecting
+        Rejecting --> FallbackResponse: Return Cached/Default
+        FallbackResponse --> WaitingTimer: Start Timer
+        WaitingTimer --> [*]: Timeout
+    }
+    
+    state HalfOpen {
+        [*] --> TestingService
+        TestingService --> EvaluatingResponse: Limited Requests
+        EvaluatingResponse --> [*]: Decision Made
+    }
+    
+    note right of Closed
+        Normal operation
+        Tracking failures
+    end note
+    
+    note right of Open
+        Service unavailable
+        Immediate failures
+        Using fallbacks
+    end note
+    
+    note right of HalfOpen
+        Testing recovery
+        Limited traffic
+    end note
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Disaster Recovery Flow</div>
+                    <div class="mermaid">
+graph LR
+    A[Disaster Event] --> B[Detection]
+    B --> B1[Health Check Failure]
+    B1 --> C[Incident Classification]
+    
+    C --> D{Severity Level}
+    
+    D -->|Critical| E[Full Outage]
+    D -->|High| F[Partial Outage]
+    D -->|Medium| G[Degraded Performance]
+    
+    E --> E1[Activate DR Plan]
+    E1 --> E2[Failover to Backup]
+    E2 --> E3[Restore from Backup]
+    E3 --> E4[Verify Data Integrity]
+    
+    F --> F1[Isolate Failed Component]
+    F1 --> F2[Route to Healthy Nodes]
+    F2 --> F3[Hot Swap Service]
+    
+    G --> G1[Enable Caching]
+    G1 --> G2[Reduce Load]
+    G2 --> G3[Scale Resources]
+    
+    E4 --> H[Recovery Complete]
+    F3 --> H
+    G3 --> H
+    
+    H --> I[Post-Mortem]
+    I --> I1[Root Cause Analysis]
+    I1 --> I2[Document Lessons]
+    I2 --> I3[Update Runbooks]
+    
+    style A fill:#dc2626,stroke:#0A2540,stroke-width:3px,color:#fff
+    style E1 fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style H fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+            </section>
+
+            <!-- 26. Model Versioning & Decision Auditing -->
+            <section id="model-versioning" class="diagram-section">
+                <div class="section-header">
+                    <h2>Model Versioning & Decision Auditing</h2>
+                    <p>Agent model version control, decision traceability, and audit trail management</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Model Versioning System</div>
+                    <div class="mermaid">
+graph TB
+    subgraph "Development"
+        DEV_PROMPT[Prompt Development]
+        DEV_TEST[Testing]
+        DEV_VALIDATE[Validation]
+    end
+    
+    subgraph "Version Control"
+        GIT[Git Repository]
+        VERSION_TAG[Version Tags]
+        CHANGELOG[Changelog]
+    end
+    
+    subgraph "Model Registry"
+        REGISTRY[Model Registry]
+        METADATA[Model Metadata]
+        PERFORMANCE[Performance Metrics]
+    end
+    
+    subgraph "Deployment"
+        STAGING[Staging Environment]
+        CANARY[Canary Deployment]
+        PRODUCTION[Production]
+    end
+    
+    subgraph "Monitoring"
+        METRICS[Performance Metrics]
+        COMPARISON[A/B Comparison]
+        ROLLBACK[Rollback Trigger]
+    end
+    
+    subgraph "Audit System"
+        DECISION_LOG[Decision Log]
+        VERSION_TRACK[Version Tracking]
+        TRACE_LINK[Trace Linkage]
+        COMPLIANCE[Compliance Report]
+    end
+    
+    DEV_PROMPT --> DEV_TEST
+    DEV_TEST --> DEV_VALIDATE
+    DEV_VALIDATE --> GIT
+    
+    GIT --> VERSION_TAG
+    VERSION_TAG --> CHANGELOG
+    CHANGELOG --> REGISTRY
+    
+    REGISTRY --> METADATA
+    METADATA --> PERFORMANCE
+    PERFORMANCE --> STAGING
+    
+    STAGING --> CANARY
+    CANARY --> METRICS
+    
+    METRICS --> COMPARISON
+    COMPARISON --> ROLLBACK
+    
+    ROLLBACK --> PRODUCTION
+    CANARY --> PRODUCTION
+    
+    PRODUCTION --> DECISION_LOG
+    DECISION_LOG --> VERSION_TRACK
+    VERSION_TRACK --> TRACE_LINK
+    TRACE_LINK --> COMPLIANCE
+    
+    COMPLIANCE --> OPIK[(Opik Platform)]
+    
+    style REGISTRY fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style CANARY fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style DECISION_LOG fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style OPIK fill:#1B3B5F,stroke:#0A2540,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Decision Audit Trail</div>
+                    <div class="mermaid">
+sequenceDiagram
+    participant Agent as Agent System
+    participant Version as Version Manager
+    participant Decision as Decision Engine
+    participant Audit as Audit System
+    participant Opik as Opik Platform
+    participant Storage as Audit Storage
+    
+    Agent->>Version: Get active model version
+    Version-->>Agent: v2.3.1
+    
+    Agent->>Decision: Make recommendation
+    Note over Decision: Using model v2.3.1
+    Decision->>Decision: Generate decision
+    
+    Decision->>Audit: Log decision event
+    Audit->>Audit: Capture metadata
+    Note over Audit: User ID, timestamp<br/>model version, input<br/>output, reasoning
+    
+    Audit->>Opik: Send trace
+    Opik->>Opik: Link to model version
+    Opik->>Opik: Store decision graph
+    
+    Audit->>Storage: Persist audit record
+    Storage->>Storage: Index by version
+    Storage->>Storage: Index by user
+    Storage->>Storage: Index by timestamp
+    
+    Note over Storage: Immutable audit log<br/>Tamper-proof<br/>Cryptographically signed
+    
+    Storage-->>Audit: Record ID
+    Audit-->>Decision: Audit complete
+    
+    style Audit fill:#0066CC,stroke:#0A2540,stroke-width:2px
+    style Opik fill:#1B3B5F,stroke:#0A2540,stroke-width:2px
+    style Storage fill:#2E5C8A,stroke:#0A2540,stroke-width:2px
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Version Comparison & Rollback</div>
+                    <div class="mermaid">
+graph LR
+    A[Model v2.3.1 Active] --> B[Deploy v2.4.0]
+    B --> C[Canary 10%]
+    
+    C --> D[Collect Metrics]
+    D --> D1[Quality Score]
+    D --> D2[Latency]
+    D --> D3[User Satisfaction]
+    D --> D4[Error Rate]
+    
+    D1 --> E[Compare Versions]
+    D2 --> E
+    D3 --> E
+    D4 --> E
+    
+    E --> F{Performance}
+    
+    F -->|Better| G[Increase to 50%]
+    F -->|Worse| H[Rollback]
+    F -->|Same| I[Continue Testing]
+    
+    G --> J[Monitor]
+    J --> K{Still Better?}
+    
+    K -->|Yes| L[Deploy 100%]
+    K -->|No| H
+    
+    H --> M[Revert to v2.3.1]
+    M --> N[Log Rollback Event]
+    N --> O[Post-Mortem]
+    
+    I --> C
+    
+    L --> P[Mark as Stable]
+    P --> Q[Archive v2.3.1]
+    
+    style E fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style H fill:#dc2626,stroke:#0A2540,stroke-width:2px,color:#fff
+    style L fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+            </section>
+
+            <!-- 27. Scalability & Load Handling -->
+            <section id="scalability" class="diagram-section">
+                <div class="section-header">
+                    <h2>Scalability & Load Handling</h2>
+                    <p>Horizontal scaling, load balancing, caching strategies, and performance optimization</p>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Scalability Architecture</div>
+                    <div class="mermaid">
+graph TB
+    subgraph "Load Distribution"
+        LB[Load Balancer]
+        ROUTER[Request Router]
+        STICKY[Sticky Sessions]
+    end
+    
+    subgraph "Application Tier - Auto-Scaled"
+        APP1[Next.js Instance 1]
+        APP2[Next.js Instance 2]
+        APP3[Next.js Instance 3]
+        APPN[Next.js Instance N]
+    end
+    
+    subgraph "Caching Layer"
+        EDGE_CACHE[Edge Cache]
+        REDIS[Redis Cache]
+        QUERY_CACHE[Query Cache]
+    end
+    
+    subgraph "Agent Processing - Queue Based"
+        QUEUE[Message Queue]
+        WORKER1[Agent Worker 1]
+        WORKER2[Agent Worker 2]
+        WORKERN[Agent Worker N]
+    end
+    
+    subgraph "Database Layer"
+        PRIMARY[(Primary DB)]
+        REPLICA1[(Read Replica 1)]
+        REPLICA2[(Read Replica 2)]
+        CONN_POOL[Connection Pool]
+    end
+    
+    subgraph "External Services - Rate Limited"
+        GEMINI_POOL[Gemini API Pool]
+        PLAID_POOL[Plaid API Pool]
+        OPIK_BATCH[Opik Batch Sender]
+    end
+    
+    subgraph "Monitoring & Auto-Scaling"
+        METRICS[Metrics Collector]
+        SCALER[Auto-Scaler]
+        HEALTH[Health Checker]
+    end
+    
+    CLIENT[Clients] --> LB
+    LB --> ROUTER
+    ROUTER --> STICKY
+    
+    STICKY --> APP1
+    STICKY --> APP2
+    STICKY --> APP3
+    STICKY --> APPN
+    
+    APP1 --> EDGE_CACHE
+    APP2 --> EDGE_CACHE
+    APP3 --> EDGE_CACHE
+    
+    EDGE_CACHE --> REDIS
+    REDIS --> QUERY_CACHE
+    
+    APP1 --> QUEUE
+    APP2 --> QUEUE
+    APP3 --> QUEUE
+    
+    QUEUE --> WORKER1
+    QUEUE --> WORKER2
+    QUEUE --> WORKERN
+    
+    WORKER1 --> GEMINI_POOL
+    WORKER2 --> GEMINI_POOL
+    WORKERN --> GEMINI_POOL
+    
+    APP1 --> CONN_POOL
+    APP2 --> CONN_POOL
+    APP3 --> CONN_POOL
+    
+    CONN_POOL --> PRIMARY
+    CONN_POOL --> REPLICA1
+    CONN_POOL --> REPLICA2
+    
+    WORKER1 --> OPIK_BATCH
+    WORKER2 --> OPIK_BATCH
+    
+    APP1 --> METRICS
+    APP2 --> METRICS
+    APP3 --> METRICS
+    WORKER1 --> METRICS
+    WORKER2 --> METRICS
+    
+    METRICS --> SCALER
+    SCALER --> HEALTH
+    
+    SCALER -.Scale Up/Down.-> APP1
+    SCALER -.Scale Up/Down.-> WORKER1
+    
+    style LB fill:#0066CC,stroke:#0A2540,stroke-width:3px,color:#fff
+    style QUEUE fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+    style REDIS fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style SCALER fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Load Balancing Strategy</div>
+                    <div class="mermaid">
+sequenceDiagram
+    participant Client
+    participant LB
+    participant Health
+    participant App1
+    participant App2
+    participant App3
+    
+    Health->>App1: Health check
+    App1-->>Health: Healthy 20%
+    Health->>App2: Health check
+    App2-->>Health: Healthy 75%
+    Health->>App3: Health check
+    App3-->>Health: Healthy 45%
+    
+    Client->>LB: Request 1
+    LB->>LB: Check instance loads
+    LB->>App1: Route (lowest load)
+    App1-->>Client: Response
+    
+    Client->>LB: Request 2
+    LB->>App3: Route (next lowest)
+    App3-->>Client: Response
+    
+    Client->>LB: Request 3
+    LB->>App1: Route (still lowest)
+    App1-->>Client: Response
+    
+    Note over Health,App2: App2 load exceeds 70%
+    Health->>LB: Alert high load on App2
+    LB->>LB: Reduce traffic to App2
+    
+    style LB fill:#0066CC,stroke:#0A2540,stroke-width:2px
+    style Health fill:#00B4D8,stroke:#0A2540,stroke-width:2px
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Caching Strategy</div>
+                    <div class="mermaid">
+graph LR
+    A[Client Request] --> B{Cache Hit?}
+    
+    B -->|Edge Cache Hit| C1[Return from Edge]
+    B -->|Edge Miss| D[Check Redis]
+    
+    D --> E{Redis Hit?}
+    E -->|Yes| C2[Return from Redis]
+    E -->|No| F[Check Query Cache]
+    
+    F --> G{Query Cache Hit?}
+    G -->|Yes| C3[Return from Query Cache]
+    G -->|No| H[Query Database]
+    
+    H --> I[Database Query]
+    I --> J[Store in Query Cache]
+    J --> K[Store in Redis]
+    K --> L[Store in Edge]
+    L --> M[Return to Client]
+    
+    C1 --> N[Update TTL]
+    C2 --> N
+    C3 --> N
+    M --> N
+    
+    N --> O[Response]
+    
+    subgraph "Cache Layers"
+        C1
+        C2
+        C3
+    end
+    
+    subgraph "Database Tier"
+        I
+    end
+    
+    subgraph "Cache Population"
+        J
+        K
+        L
+    end
+    
+    style B fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style C1 fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style C2 fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style C3 fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style I fill:#2E5C8A,stroke:#0A2540,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+
+                <div class="diagram-container">
+                    <div class="diagram-title">Auto-Scaling Flow</div>
+                    <div class="mermaid">
+graph TB
+    A[Monitor System Metrics] --> B[Collect Data]
+    B --> B1[CPU Usage]
+    B --> B2[Memory Usage]
+    B --> B3[Request Rate]
+    B --> B4[Response Time]
+    B --> B5[Queue Depth]
+    
+    B1 --> C[Analyze Thresholds]
+    B2 --> C
+    B3 --> C
+    B4 --> C
+    B5 --> C
+    
+    C --> D{Threshold Exceeded?}
+    
+    D -->|CPU > 70%| E[Scale Up]
+    D -->|Memory > 80%| E
+    D -->|Queue > 100| E
+    D -->|Latency > 2s| E
+    
+    D -->|CPU < 30%| F[Scale Down]
+    D -->|Memory < 40%| F
+    D -->|Queue < 10| F
+    
+    D -->|Normal| G[Maintain]
+    
+    E --> E1[Provision New Instance]
+    E1 --> E2[Health Check]
+    E2 --> E3[Add to Load Balancer]
+    E3 --> E4[Start Receiving Traffic]
+    
+    F --> F1[Identify Underutilized]
+    F1 --> F2[Drain Connections]
+    F2 --> F3[Remove from LB]
+    F3 --> F4[Terminate Instance]
+    
+    E4 --> H[Update Metrics]
+    F4 --> H
+    G --> H
+    
+    H --> A
+    
+    style C fill:#0066CC,stroke:#0A2540,stroke-width:2px,color:#fff
+    style E fill:#00B4D8,stroke:#0A2540,stroke-width:2px,color:#fff
+    style F fill:#4A90E2,stroke:#2E5C8A,stroke-width:2px,color:#fff
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>🧠 ClarityLab - Autonomous Financial Intelligence System</p>
+            <p>Phase 1: Core Architecture & Infrastructure | Phase 2: Agent Intelligence & Data Processing</p>
+            <p>Phase 3-A: Observability & Evaluation | Phase 3-B: Security, Governance & Advanced Features</p>
+            <p>Built with trust-centric design principles | Complete System Documentation</p>
+        </footer>
+    </div>
+
+    <script>
+        mermaid.initialize({
+            startOnLoad: true,
+            theme: 'base',
+            themeVariables: {
+                primaryColor: '#0066CC',
+                primaryTextColor: '#0A2540',
+                primaryBorderColor: '#2E5C8A',
+                lineColor: '#4A90E2',
+                secondaryColor: '#00B4D8',
+                tertiaryColor: '#F8F9FA',
+                background: '#FFFFFF',
+                mainBkg: '#F8F9FA',
+                secondBkg: '#E1E4E8',
+                border1: '#2E5C8A',
+                border2: '#4A90E2',
+                note: '#00B4D8',
+                noteBkgColor: '#F8F9FA',
+                noteTextColor: '#0A2540',
+                noteBorderColor: '#0066CC',
+                textColor: '#0A2540',
+                fontSize: '16px',
+                fontFamily: 'Inter, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif'
+            },
+            flowchart: {
+                curve: 'basis',
+                padding: 20
+            },
+            sequence: {
+                diagramMarginX: 20,
+                diagramMarginY: 20,
+                actorMargin: 80,
+                width: 200,
+                height: 60,
+                boxMargin: 15
+            }
+        });
+    </script>
+</body>
+</html>

@@ -86,19 +86,30 @@ const mockRecommendations = [
 
 export default function InsightsPage() {
   return (
-    <div className="flex flex-col gap-8 p-8 bg-gradient-to-br from-background to-muted/20">
-      <div className="space-y-2">
-        <h1 className="text-4xl font-bold tracking-tight bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Insights & Recommendations</h1>
-        <p className="text-muted-foreground text-lg">
+    <div className="relative flex flex-col gap-8 p-6 lg:p-8 min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950">
+      {/* Animated background effects */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 right-0 w-96 h-96 bg-blue-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
+        <div className="absolute bottom-20 left-20 w-96 h-96 bg-cyan-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-1/2 right-1/3 w-96 h-96 bg-indigo-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
+      </div>
+
+      {/* Header */}
+      <div className="relative z-10 space-y-3">
+        <div className="flex items-center gap-3">
+          <div className="h-12 w-1 bg-gradient-to-b from-blue-500 via-cyan-500 to-blue-600 rounded-full"></div>
+          <h1 className="text-4xl lg:text-5xl font-bold tracking-tight bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500 bg-clip-text text-transparent">Insights & Recommendations</h1>
+        </div>
+        <p className="text-blue-200/70 text-base lg:text-lg ml-4">
           AI-powered analysis with actionable recommendations
         </p>
       </div>
 
       {/* Action Plans Section */}
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-3xl font-bold">Prioritized Action Plans</h2>
-          <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground">
+      <div className="relative z-10 space-y-6">
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <h2 className="text-3xl font-bold text-white">Prioritized Action Plans</h2>
+          <Button className="border-blue-500/50 bg-blue-500/10 text-blue-300 hover:bg-blue-500/20 hover:text-blue-200 hover:border-blue-400 transition-all backdrop-blur-sm">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -138,10 +149,10 @@ export default function InsightsPage() {
       </div>
 
       {/* Insights Section */}
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-3xl font-bold">Pattern Detection</h2>
-          <Button variant="outline" className="border-accent text-accent hover:bg-accent hover:text-accent-foreground">
+      <div className="relative z-10 space-y-6">
+        <div className="flex items-center justify-between flex-wrap gap-4">
+          <h2 className="text-3xl font-bold text-white">Pattern Detection</h2>
+          <Button className="border-cyan-500/50 bg-cyan-500/10 text-cyan-300 hover:bg-cyan-500/20 hover:text-cyan-200 hover:border-cyan-400 transition-all backdrop-blur-sm">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="16"
@@ -177,6 +188,32 @@ export default function InsightsPage() {
           ))}
         </div>
       </div>
+
+      <style jsx>{`
+        @keyframes blob {
+          0% {
+            transform: translate(0px, 0px) scale(1);
+          }
+          33% {
+            transform: translate(30px, -50px) scale(1.1);
+          }
+          66% {
+            transform: translate(-20px, 20px) scale(0.9);
+          }
+          100% {
+            transform: translate(0px, 0px) scale(1);
+          }
+        }
+        .animate-blob {
+          animation: blob 7s infinite;
+        }
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+      `}</style>
     </div>
   )
 }

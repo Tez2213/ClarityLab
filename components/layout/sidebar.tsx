@@ -95,58 +95,69 @@ export function Sidebar() {
   ]
 
   return (
-    <div className="sticky top-0 h-screen w-64 flex-col border-r bg-white shadow-sm">
+    <div className="sticky top-0 h-screen w-64 flex-col border-r border-blue-500/20 bg-gradient-to-b from-slate-950 via-blue-950/50 to-slate-950 shadow-2xl shadow-blue-500/10">
       {/* Logo Header */}
-      <div className="flex h-20 items-center border-b px-6 bg-gradient-to-r from-primary/5 to-accent/5">
-        <Link href="/dashboard" className="flex items-center space-x-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent shadow-lg">
+      <div className="flex h-20 items-center border-b border-blue-500/20 px-6 bg-gradient-to-r from-blue-500/10 to-cyan-500/10">
+        <Link href="/dashboard" className="flex items-center space-x-3 group">
+          <div className="relative flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-blue-600 to-cyan-600 shadow-lg shadow-blue-500/50 group-hover:shadow-cyan-500/50 transition-all group-hover:scale-110">
             <span className="text-xl font-bold text-white">C</span>
+            <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-blue-400 to-cyan-400 opacity-0 group-hover:opacity-20 transition-opacity" />
           </div>
-          <span className="font-bold text-xl bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+          <span className="font-bold text-xl bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500 bg-clip-text text-transparent">
             ClarityLab
           </span>
         </Link>
       </div>
 
       {/* Navigation */}
-      <div className="flex-1 space-y-1 py-6 px-3">
+      <div className="flex-1 space-y-2 py-6 px-3">
         {navItems.map((item) => (
           <Link
             key={item.href}
             href={item.href}
             className={cn(
-              "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all",
+              "flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium transition-all group relative overflow-hidden",
               pathname === item.href
-                ? "bg-gradient-to-r from-primary to-accent text-white shadow-md shadow-primary/25"
-                : "text-muted-foreground hover:bg-secondary hover:text-foreground"
+                ? "bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-lg shadow-blue-500/30"
+                : "text-blue-200/80 hover:bg-slate-900/70 hover:text-white hover:shadow-md hover:shadow-blue-500/20"
             )}
           >
-            {item.icon}
+            <span className={cn(
+              "transition-transform group-hover:scale-110",
+              pathname === item.href ? "text-white" : "text-blue-400 group-hover:text-cyan-300"
+            )}>
+              {item.icon}
+            </span>
             {item.title}
+            {pathname === item.href && (
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-400/20 to-cyan-400/20 animate-pulse" />
+            )}
           </Link>
         ))}
       </div>
 
       {/* Settings at bottom */}
-      <div className="border-t p-4 bg-secondary/30">
+      <div className="border-t border-blue-500/20 p-4 bg-slate-900/50">
         <Link
           href="/settings"
-          className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-muted-foreground transition-all hover:bg-white hover:text-foreground hover:shadow-sm"
+          className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-medium text-blue-200/80 transition-all hover:bg-slate-900/70 hover:text-white hover:shadow-md hover:shadow-blue-500/20 group relative"
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="20"
-            height="20"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
-            <circle cx="12" cy="12" r="3" />
-          </svg>
+          <span className="text-blue-400 group-hover:text-cyan-300 transition-all group-hover:scale-110">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </span>
           Settings
         </Link>
       </div>

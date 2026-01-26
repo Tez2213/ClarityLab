@@ -27,8 +27,8 @@ export function QuickStats({ stats, changes }: QuickStatsProps) {
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
+          width="24"
+          height="24"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -47,8 +47,8 @@ export function QuickStats({ stats, changes }: QuickStatsProps) {
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
+          width="24"
+          height="24"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -69,8 +69,8 @@ export function QuickStats({ stats, changes }: QuickStatsProps) {
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
+          width="24"
+          height="24"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -91,8 +91,8 @@ export function QuickStats({ stats, changes }: QuickStatsProps) {
       icon: (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
+          width="24"
+          height="24"
           viewBox="0 0 24 24"
           fill="none"
           stroke="currentColor"
@@ -108,34 +108,42 @@ export function QuickStats({ stats, changes }: QuickStatsProps) {
   ]
 
   return (
-    <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-      {statCards.map((stat) => (
-        <Card key={stat.title} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 bg-white">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-3">
-            <CardTitle className="text-sm font-semibold text-muted-foreground">
-              {stat.title}
-            </CardTitle>
-            <div className="h-10 w-10 rounded-xl bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center text-primary">
-              {stat.icon}
-            </div>
-          </CardHeader>
-          <CardContent className="space-y-2">
-            <div className="text-3xl font-bold">{formatCurrency(stat.value)}</div>
-            <p
-              className={`text-sm font-medium flex items-center gap-1 ${
-                stat.change >= 0 ? "text-green-600" : "text-red-600"
-              }`}
-            >
-              {stat.change >= 0 ? (
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m18 15-6-6-6 6"/></svg>
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m6 9 6 6 6-6"/></svg>
-              )}
-              {stat.change >= 0 ? "+" : ""}
-              {stat.change.toFixed(1)}% from last month
-            </p>
-          </CardContent>
-        </Card>
+    <div className="grid gap-4 lg:gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {statCards.map((card) => (
+        <div key={card.title} className="group relative">
+          <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-cyan-600/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-all"></div>
+          <Card className="relative border-0 bg-slate-900/70 backdrop-blur-xl shadow-xl hover:shadow-blue-500/20 transition-all overflow-hidden">
+            <CardHeader className="flex flex-row items-center justify-between pb-3">
+              <CardTitle className="text-sm font-medium text-blue-200/70 uppercase tracking-wider">
+                {card.title}
+              </CardTitle>
+              <div className="text-cyan-400">{card.icon}</div>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <p className="text-3xl lg:text-4xl font-bold text-white">
+                  {formatCurrency(card.value)}
+                </p>
+                <p
+                  className={`text-sm font-semibold flex items-center gap-1 ${
+                    card.change >= 0
+                      ? "text-green-400"
+                      : "text-red-400"
+                  }`}
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    {card.change >= 0 ? (
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+                    ) : (
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                    )}
+                  </svg>
+                  {card.change >= 0 ? "+" : ""}{card.change.toFixed(1)}% from last month
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
       ))}
     </div>
   )

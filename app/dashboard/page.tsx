@@ -89,17 +89,36 @@ const mockData = {
 
 export default function DashboardPage() {
   return (
-    <div className="flex flex-col gap-8 p-8 bg-gradient-to-br from-background via-secondary/20 to-background min-h-screen">
-      <div className="space-y-2">
-        <h1 className="text-4xl font-bold tracking-tight">Dashboard</h1>
-        <p className="text-muted-foreground text-lg">
-          Welcome back! Here's your financial overview.
-        </p>
+    <div className="relative flex flex-col gap-8 p-6 lg:p-8 min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-slate-950">
+      {/* Animated background effects */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-20 right-0 w-96 h-96 bg-blue-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob"></div>
+        <div className="absolute bottom-20 left-20 w-96 h-96 bg-cyan-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute top-1/2 right-1/3 w-96 h-96 bg-indigo-500/20 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-blob animation-delay-4000"></div>
       </div>
 
-      <QuickStats stats={mockData.stats} changes={mockData.changes} />
+      {/* Header Section */}
+      <div className="relative z-10 space-y-3">
+        <div className="flex items-center gap-3">
+          <div className="h-12 w-1 bg-gradient-to-b from-blue-500 via-cyan-500 to-blue-600 rounded-full"></div>
+          <div>
+            <h1 className="text-4xl lg:text-5xl font-bold tracking-tight bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500 bg-clip-text text-transparent">
+              Financial Dashboard
+            </h1>
+            <p className="text-blue-200/70 text-base lg:text-lg mt-1">
+              Welcome back! Here's your real-time financial intelligence.
+            </p>
+          </div>
+        </div>
+      </div>
 
-      <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-7">
+      {/* Quick Stats */}
+      <div className="relative z-10">
+        <QuickStats stats={mockData.stats} changes={mockData.changes} />
+      </div>
+
+      {/* Health Score & Spending Chart */}
+      <div className="relative z-10 grid gap-6 lg:gap-8 md:grid-cols-2 lg:grid-cols-7">
         <div className="lg:col-span-3">
           <FinancialHealthScore
             score={mockData.healthScore.score}
@@ -112,10 +131,37 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="grid gap-8 md:grid-cols-2">
+      {/* Budget Tracker & Recent Transactions */}
+      <div className="relative z-10 grid gap-6 lg:gap-8 md:grid-cols-2">
         <BudgetTracker budgets={mockData.budgets} />
         <RecentTransactions transactions={mockData.transactions} />
       </div>
+
+      <style jsx>{`
+        @keyframes blob {
+          0% {
+            transform: translate(0px, 0px) scale(1);
+          }
+          33% {
+            transform: translate(30px, -50px) scale(1.1);
+          }
+          66% {
+            transform: translate(-20px, 20px) scale(0.9);
+          }
+          100% {
+            transform: translate(0px, 0px) scale(1);
+          }
+        }
+        .animate-blob {
+          animation: blob 7s infinite;
+        }
+        .animation-delay-2000 {
+          animation-delay: 2s;
+        }
+        .animation-delay-4000 {
+          animation-delay: 4s;
+        }
+      `}</style>
     </div>
   )
 }
